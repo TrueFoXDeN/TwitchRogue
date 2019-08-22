@@ -12,6 +12,7 @@ public class Display extends JPanel {
 
         g.setColor(Color.BLACK);
 
+        g.fillRect(0,0,100,100);
 
 
     }
