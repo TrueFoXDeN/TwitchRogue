@@ -26,7 +26,6 @@ public class GameLoop extends Thread{
                 delta --;
             }
 
-            render();
             frames++;
 
             if(System.currentTimeMillis() - timer > 1000){
@@ -41,10 +40,6 @@ public class GameLoop extends Thread{
 
     public void update(){
 
-    }
-
-    public void render(){
-        Main.frame.repaint();
     }
 
     public void stopThread(){
