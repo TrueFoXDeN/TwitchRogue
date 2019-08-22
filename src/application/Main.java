@@ -3,11 +3,13 @@ package application;
 import gui.MainFrame;
 
 public class Main {
-
+    public static MainFrame frame;
     public static void main(String[] args) {
 
-        MainFrame frame = new MainFrame();
 
+        frame = new MainFrame();
+        GameLoop loop = new GameLoop();
+        loop.start();
     }
 
 }
