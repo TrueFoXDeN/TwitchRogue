@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -63,13 +62,15 @@ public class TwitchConnection implements Runnable {
         }
     }
 
-    private void recvData() {
+    private void recvData() throws InterruptedException {
         try (BufferedInputStream bStream = new BufferedInputStream(SOCKET.getInputStream())) {
             byte[] data = new byte[PACKET_SIZE];
             bStream.read(data, 0, data.length);
 
             String stringData = new String(data);
-            Arrays.stream(stringData.split("\n")).forEach(messages::add);
+            for (String s : stringData.split("\n")) {
+                messages.put(s);
+            }
         } catch (IOException e) {
             System.err.println("Can't send data to twitch server! Exiting...");
             try {
@@ -83,7 +84,12 @@ public class TwitchConnection implements Runnable {
     public void run() {
         initConnection();
         while(!NETWORK_THREAD.isInterrupted()) {
-            recvData();
+            try {
+                recvData();
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
