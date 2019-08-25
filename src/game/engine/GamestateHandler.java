@@ -3,6 +3,7 @@ package game.engine;
 import application.Main;
 import game.Player;
 import game.arena.Maze;
+import io.networking.TwitchConnection;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -20,6 +21,8 @@ public class GamestateHandler {
 
     // player entity is handled separately
     private final Player player = new Player();
+
+    public static TwitchConnection twitchConnection;
 
     public GamestateHandler() {
         Main.display.getDrawables().add(player);

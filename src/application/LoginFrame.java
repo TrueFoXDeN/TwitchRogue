@@ -1,15 +1,15 @@
 package application;
 
+import game.engine.GamestateHandler;
 import io.networking.TwitchConnection;
 
 import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class LoginFrame extends JFrame {
 
@@ -40,7 +40,7 @@ public class LoginFrame extends JFrame {
         textFieldName = new JTextField();
         textFieldName.setColumns(10);
 
-        JLabel lblBenutzername = new JLabel("Chanel ID:");
+        JLabel lblBenutzername = new JLabel("Channel ID:");
 
         textFieldChanel = new JTextField();
         textFieldChanel.setColumns(10);
@@ -53,7 +53,7 @@ public class LoginFrame extends JFrame {
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                TwitchConnection twitchConnection = new TwitchConnection(textFieldName.getText(),
+                GamestateHandler.twitchConnection = new TwitchConnection(textFieldName.getText(),
                         String.valueOf(passwordFieldOAuth.getPassword()), textFieldChanel.getText());
 
             }
