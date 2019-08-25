@@ -24,6 +24,7 @@ public class Maze {
     }
 
     private void generateMaze() {
+        // source of algorithm: https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_backtracker
 
         Deque<Cell> stack = new ArrayDeque<>();
         Random rand = new Random();
