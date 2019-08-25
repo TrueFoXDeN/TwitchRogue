@@ -143,6 +143,8 @@ public class Maze implements Drawable {
         boolean[] borders = {true, true, true, true};
         boolean visited = false;
 
+        boolean discovered = false;
+
         public Cell(int x, int y) {
             this.x = x;
             this.y = y;
