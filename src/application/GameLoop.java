@@ -1,6 +1,7 @@
 package application;
 
 import game.engine.GamestateHandler;
+import io.ImageLoader;
 
 public class GameLoop extends Thread{
 
@@ -9,6 +10,9 @@ public class GameLoop extends Thread{
     double delta = 0;
     @Override
     public void run() {
+
+        init();
+
         long lastLoopTime = System.nanoTime();
         final int TARGET_FPS = 60;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
@@ -37,6 +41,10 @@ public class GameLoop extends Thread{
 
     private void update(double data){
         gHandler.update(delta);
+    }
+
+    private void init() {
+        ImageLoader.load();
     }
 
     public void stopThread(){
