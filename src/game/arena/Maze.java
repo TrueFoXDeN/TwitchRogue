@@ -2,6 +2,7 @@ package game.arena;
 
 import drawing.Drawable;
 import game.engine.Entity;
+import io.ImageLoader;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -194,9 +195,10 @@ public class Maze implements Drawable {
 
         for (int i = 0; i < cells.length; i++) {
             Cell cell = cells[i];
-            g.setColor(Color.LIGHT_GRAY);
+            g.drawImage(ImageLoader.sprites.get("cobble"),cell.x * CELL_SIZE, cell.y * CELL_SIZE,CELL_SIZE,CELL_SIZE,null );
+           /* g.setColor(Color.GREEN);
             ((Graphics2D) g).setStroke(new BasicStroke(1));
-            g.drawRect(cell.x * CELL_SIZE, cell.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            g.drawRect(cell.x * CELL_SIZE, cell.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);*/
         }
 
         for (int i = 0; i < cells.length; i++) {

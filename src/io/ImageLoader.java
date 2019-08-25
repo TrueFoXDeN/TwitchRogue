@@ -15,6 +15,7 @@ public class ImageLoader {
     private ImageLoader() throws IOException {
         sprites.put("cobble",
                 ImageIO.read(Files.newInputStream(Paths.get("res", "world", "bg_cobble.png"))));
+        sprites.put("wall", ImageIO.read(Files.newInputStream(Paths.get("res", "world", "bg_wall.png"))));
     }
 
     public static void load() {
