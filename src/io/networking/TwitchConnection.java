@@ -1,8 +1,6 @@
 package io.networking;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -15,31 +13,40 @@ public class TwitchConnection implements Runnable {
 
     private String name;
     private String oAuthToken;
+    private String channelID;
 
-    private final int PACKET_SIZE = (int)(Math.pow(2, 16));
+    private BufferedReader inStream;
+    private BufferedWriter outStream;
 
     private final BlockingQueue<String> messages = new ArrayBlockingQueue<>(500);
     private Socket SOCKET = null;
     private final Thread NETWORK_THREAD = new Thread(this);
 
-    public TwitchConnection(String name, String oAuthToken) {
+    public TwitchConnection(String name, String oAuthToken, String channelID) {
         this.name = name;
         this.oAuthToken = oAuthToken;
+        this.channelID = channelID;
 
         try {
             ADDRESS = InetAddress.getByName("irc.chat.twitch.tv");
         } catch (UnknownHostException e) {
             System.err.println("Can't resolve address of twitch server! Exiting...");
-            // TODO: maybe close program here
             return;
         }
 
         try {
             SOCKET = new Socket(ADDRESS, PORT);
+            SOCKET.setSoTimeout(2000);
         } catch (IOException e) {
             System.err.println("Can't init socket connection to the twitch server! Exiting...");
-            // TODO: maybe close program here
             return;
+        }
+
+        try {
+            this.outStream = new BufferedWriter(new OutputStreamWriter(SOCKET.getOutputStream()));
+            this.inStream = new BufferedReader(new InputStreamReader(SOCKET.getInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         NETWORK_THREAD.setName("network-1");
@@ -48,36 +55,38 @@ public class TwitchConnection implements Runnable {
     }
 
     private void initConnection() {
-        try (BufferedOutputStream bStream = new BufferedOutputStream(SOCKET.getOutputStream())) {
-            String loginMsg = String.format("PASS %s\nNICK %s\n", oAuthToken, name);
-            byte[] data = loginMsg.getBytes();
+        try {
+            String loginMsg = String.format("PASS %s\n\rNICK %s\n\r", oAuthToken, name);
+            outStream.write(loginMsg);
+            outStream.flush();
 
-            bStream.write(data, 0, data.length);
-        } catch (IOException e) {
+            while (!recvData().equals(""));
+
+            String joinMsg = String.format("JOIN #%s\n", channelID);
+            outStream.write(joinMsg);
+            outStream.flush();
+        } catch (IOException | InterruptedException e) {
             System.err.println("Can't send data to twitch server! Exiting...");
-            try {
-                SOCKET.close();
-            } catch (IOException ex) {
-            }
         }
     }
 
-    private void recvData() throws InterruptedException {
-        try (BufferedInputStream bStream = new BufferedInputStream(SOCKET.getInputStream())) {
-            byte[] data = new byte[PACKET_SIZE];
-            bStream.read(data, 0, data.length);
-
-            String stringData = new String(data);
+    private String recvData() throws InterruptedException {
+        String data;
+        try {
+            String stringData = inStream.readLine();
+            data = stringData;
+            System.out.println(data);
             for (String s : stringData.split("\n")) {
                 messages.put(s);
             }
         } catch (IOException e) {
-            System.err.println("Can't send data to twitch server! Exiting...");
-            try {
-                SOCKET.close();
-            } catch (IOException ex) {
-            }
+            return "";
         }
+        return data;
+    }
+
+    public BlockingQueue<String> getMessages() {
+        return messages;
     }
 
     @Override
@@ -86,7 +95,6 @@ public class TwitchConnection implements Runnable {
         while(!NETWORK_THREAD.isInterrupted()) {
             try {
                 recvData();
-                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
