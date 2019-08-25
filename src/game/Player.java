@@ -12,6 +12,8 @@ public class Player implements Entity, Drawable {
     // position on the map
     private Point2D pos = new Point(0, 0);
 
+
+
     @Override
     public void draw(Graphics g) {
         g.setColor(Color.GREEN);

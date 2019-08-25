@@ -8,6 +8,7 @@ import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Maze implements Drawable {
@@ -29,7 +30,7 @@ public class Maze implements Drawable {
 
         cells = new Cell[size * size];
 
-        for(int i = 0; i < cells.length; ++i) {
+        for (int i = 0; i < cells.length; ++i) {
             cells[i] = new Cell(i % size, i / size);
         }
 
@@ -38,51 +39,78 @@ public class Maze implements Drawable {
     }
 
     public void updateVision(Point2D playerPos) {
-        int x = (int)playerPos.getX();
-        int y = (int)playerPos.getY();
+        int x = (int) playerPos.getX();
+        int y = (int) playerPos.getY();
+
+        var revealNeighbor = new Function<Point2D, Void>() {
+            @Override
+            public Void apply(Point2D point2D) {
+                int x = (int) point2D.getX();
+                int y = (int) point2D.getY();
+
+                if (x > 0 && !cells[x + y * size].borders[Cell.W])
+                    cells[x - 1 + y * size].halfVisible = true;
+
+                if (x < size - 1 && !cells[x + y * size].borders[Cell.E])
+                    cells[x + 1 + y * size].halfVisible = true;
+
+                if (y > 0 && !cells[x + y * size].borders[Cell.N])
+                    cells[x + (y - 1) * size].halfVisible = true;
+
+                if (y < size - 1 && !cells[x + y * size].borders[Cell.S])
+                    cells[x + (y + 1) * size].halfVisible = true;
+
+                return null;
+            }
+        };
 
         cells[x + y * size].discovered = true;
+        revealNeighbor.apply(playerPos);
 
         int tempX = x;
         int tempY = y;
 
 
         // right
-        while(tempX++ < size - 1) {
+        do {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
-            if(nextCell.borders[Cell.E]) break;
-        }
+            revealNeighbor.apply(new Point(tempX, tempY));
+            if (nextCell.borders[Cell.E]) break;
+        } while (tempX++ < size - 1);
 
         tempX = x;
         tempY = y;
 
         // left
-        while(tempX-- > 0) {
+        do {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
-            if(nextCell.borders[Cell.W]) break;
-        }
+            revealNeighbor.apply(new Point(tempX, tempY));
+            if (nextCell.borders[Cell.W]) break;
+        } while (tempX-- > 0);
 
         tempX = x;
         tempY = y;
 
         // up
-        while(tempY-- > 0) {
+        do {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
-            if(nextCell.borders[Cell.N]) break;
-        }
+            revealNeighbor.apply(new Point(tempX, tempY));
+            if (nextCell.borders[Cell.N]) break;
+        } while (tempY-- > 0);
 
         tempX = x;
         tempY = y;
 
         // right
-        while(tempY++ < size - 1) {
+        do {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
-            if(nextCell.borders[Cell.S]) break;
-        }
+            revealNeighbor.apply(new Point(tempX, tempY));
+            if (nextCell.borders[Cell.S]) break;
+        } while (tempY++ < size - 1);
     }
 
     private void generateMaze() {
@@ -94,11 +122,11 @@ public class Maze implements Drawable {
         Cell current;
 
         // top to bottom
-        if(rand.nextBoolean()) {
+        if (rand.nextBoolean()) {
             // to avoid that the corners are the initial cell
             int x1 = rand.nextInt(size - 1) + 1;
             current = cells[x1];
-        // left to right
+            // left to right
         } else {
             // to avoid that the corners are the initial cell
             int y1 = rand.nextInt(size - 1) + 1;
@@ -106,7 +134,7 @@ public class Maze implements Drawable {
         }
 
 
-        while(Arrays.stream(cells).anyMatch(c -> !c.visited)) {
+        while (Arrays.stream(cells).anyMatch(c -> !c.visited)) {
             int x = current.x, y = current.y;
 
             cells[x + y * size].visited = true;
@@ -124,7 +152,7 @@ public class Maze implements Drawable {
 
 
             // if the current cell has unvisited neighbors
-            if(neighbors.size() > 0) {
+            if (neighbors.size() > 0) {
 
                 // choose one at random
                 Cell nextCell = neighbors.get(rand.nextInt(neighbors.size()));
@@ -152,7 +180,7 @@ public class Maze implements Drawable {
 
                 current = nextCell;
 
-            // if the current cell has no unvisited neighbor
+                // if the current cell has no unvisited neighbor
             } else {
 
                 // pop a cell from the stack and make it the current cell
@@ -171,28 +199,31 @@ public class Maze implements Drawable {
             g.drawRect(cell.x * CELL_SIZE, cell.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
         }
 
-        for(int i = 0; i < cells.length; i++) {
+        for (int i = 0; i < cells.length; i++) {
             Cell cell = cells[i];
 
-            g.setColor(Color.BLACK);
             ((Graphics2D) g).setStroke(new BasicStroke(5));
-            if(!cell.discovered){
+            if (!cell.discovered) {
+                g.setColor(Color.BLACK);
+                if (cell.halfVisible) {
+                    g.setColor(new Color(0, 0, 0, 125));
+                }
                 g.fillRect(cell.x * CELL_SIZE, cell.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
 
-            if(cell.borders[Cell.N]) {
+            if (cell.borders[Cell.N]) {
                 g.drawLine(cell.x * CELL_SIZE, cell.y * CELL_SIZE,
                         (cell.x + 1) * CELL_SIZE, cell.y * CELL_SIZE);
             }
-            if(cell.borders[Cell.E]) {
+            if (cell.borders[Cell.E]) {
                 g.drawLine((cell.x + 1) * CELL_SIZE, cell.y * CELL_SIZE,
                         (cell.x + 1) * CELL_SIZE, (cell.y + 1) * CELL_SIZE);
             }
-            if(cell.borders[Cell.S]) {
+            if (cell.borders[Cell.S]) {
                 g.drawLine(cell.x * CELL_SIZE, (cell.y + 1) * CELL_SIZE,
                         (cell.x + 1) * CELL_SIZE, (cell.y + 1) * CELL_SIZE);
             }
-            if(cell.borders[Cell.W]) {
+            if (cell.borders[Cell.W]) {
                 g.drawLine(cell.x * CELL_SIZE, cell.y * CELL_SIZE,
                         cell.x * CELL_SIZE, (cell.y + 1) * CELL_SIZE);
             }
@@ -207,6 +238,7 @@ public class Maze implements Drawable {
         boolean visited = false;
 
         boolean discovered = false;
+        boolean halfVisible = false;
 
         public Cell(int x, int y) {
             this.x = x;
