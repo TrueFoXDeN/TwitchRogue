@@ -1,5 +1,7 @@
 package application;
 
+import io.networking.TwitchConnection;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -12,9 +14,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 public class LoginFrame extends JFrame {
 
     private JPanel contentPane;
-    private JTextField textFieldDBName;
-    private JTextField textFieldUsername;
-    private JPasswordField passwordField;
+    private JTextField textFieldName;
+    private JTextField textFieldChanel;
+    private JPasswordField passwordFieldOAuth;
 
     public LoginFrame() {
 
@@ -35,21 +37,24 @@ public class LoginFrame extends JFrame {
 
         JLabel lblDatenbankname = new JLabel("Twitch-Username:");
 
-        textFieldDBName = new JTextField();
-        textFieldDBName.setColumns(10);
+        textFieldName = new JTextField();
+        textFieldName.setColumns(10);
 
         JLabel lblBenutzername = new JLabel("Chanel ID:");
 
-        textFieldUsername = new JTextField();
-        textFieldUsername.setColumns(10);
+        textFieldChanel = new JTextField();
+        textFieldChanel.setColumns(10);
 
         JLabel lblPasswort = new JLabel("OAuth ID:");
 
-        passwordField = new JPasswordField();
+        passwordFieldOAuth = new JPasswordField();
 
         JButton btnLogin = new JButton("Login");
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
+                TwitchConnection twitchConnection = new TwitchConnection(textFieldName.getText(),
+                        String.valueOf(passwordFieldOAuth.getPassword())/*, textFieldChanel.getText()*/);
 
             }
         });
@@ -63,7 +68,7 @@ public class LoginFrame extends JFrame {
         GroupLayout gl_panel = new GroupLayout(panel);
         gl_panel.setHorizontalGroup(
                 gl_panel.createParallelGroup(Alignment.LEADING)
-                        .addComponent(textFieldDBName, GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                        .addComponent(textFieldName, GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
                         .addGroup(gl_panel.createSequentialGroup()
                                 .addComponent(lblDatenbankname)
                                 .addContainerGap())
@@ -77,8 +82,8 @@ public class LoginFrame extends JFrame {
                                 .addComponent(btnLogin)
                                 .addPreferredGap(ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                                 .addComponent(btnCancel))
-                        .addComponent(passwordField, GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                        .addComponent(textFieldUsername, GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                        .addComponent(passwordFieldOAuth, GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                        .addComponent(textFieldChanel, GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
         );
         gl_panel.setVerticalGroup(
                 gl_panel.createParallelGroup(Alignment.LEADING)
@@ -86,15 +91,15 @@ public class LoginFrame extends JFrame {
                                 .addContainerGap()
                                 .addComponent(lblDatenbankname)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(textFieldDBName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textFieldName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addComponent(lblBenutzername)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(textFieldUsername, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textFieldChanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addComponent(lblPasswort)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(passwordFieldOAuth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(btnLogin)
