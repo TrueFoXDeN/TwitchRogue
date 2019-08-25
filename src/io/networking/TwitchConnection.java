@@ -75,7 +75,6 @@ public class TwitchConnection implements Runnable {
         try {
             String stringData = inStream.readLine();
             data = stringData;
-            System.out.println(data);
             for (String s : stringData.split("\n")) {
                 messages.put(s);
             }
