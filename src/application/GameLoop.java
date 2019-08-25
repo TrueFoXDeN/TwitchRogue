@@ -26,7 +26,6 @@ public class GameLoop extends Thread{
             if(delta >= 1){
                 delta--;
             }
-
             update();
 
             frames++;
