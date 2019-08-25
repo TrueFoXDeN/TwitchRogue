@@ -1,26 +1,36 @@
 package game.arena;
 
+import drawing.Drawable;
 import game.engine.Entity;
 
+import java.awt.*;
+import java.util.List;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
-public class Maze {
+public class Maze implements Drawable {
     private int size;
     private final int MAX_ENEMIES;
 
+    // size in which the cells should be drawn
+    public final static int CELL_SIZE = 50;
+
     // items and enemies
     private final List<Entity> entities = new CopyOnWriteArrayList<>();
-    private final Cell[] cells = new Cell[size * size];
+    private final Cell[] cells;
 
     public Maze(int size, int MAX_ENEMIES) {
         this.size = size;
         this.MAX_ENEMIES = MAX_ENEMIES;
 
+        cells = new Cell[size * size];
+
         for(int i = 0; i < cells.length; ++i) {
             cells[i] = new Cell(i % size, i / size);
         }
+
+        generateMaze();
     }
 
     private void generateMaze() {
@@ -95,6 +105,31 @@ public class Maze {
 
                 // pop a cell from the stack and make it the current cell
                 current = stack.pollFirst();
+            }
+        }
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        for(int i = 0; i < cells.length; i++) {
+            Cell cell = cells[i];
+            g.setColor(Color.BLACK);
+            ((Graphics2D) g).setStroke(new BasicStroke(5));
+            if(cell.borders[Cell.N]) {
+                g.drawLine(cell.x * CELL_SIZE, cell.y * CELL_SIZE,
+                        (cell.x + 1) * CELL_SIZE, cell.y * CELL_SIZE);
+            }
+            if(cell.borders[Cell.E]) {
+                g.drawLine((cell.x + 1) * CELL_SIZE, cell.y * CELL_SIZE,
+                        (cell.x + 1) * CELL_SIZE, (cell.y + 1) * CELL_SIZE);
+            }
+            if(cell.borders[Cell.S]) {
+                g.drawLine(cell.x * CELL_SIZE, (cell.y + 1) * CELL_SIZE,
+                        (cell.x + 1) * CELL_SIZE, (cell.y + 1) * CELL_SIZE);
+            }
+            if(cell.borders[Cell.W]) {
+                g.drawLine(cell.x * CELL_SIZE, cell.y * CELL_SIZE,
+                        cell.x * CELL_SIZE, (cell.y + 1) * CELL_SIZE);
             }
         }
     }

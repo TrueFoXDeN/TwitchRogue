@@ -14,6 +14,7 @@ public class Display extends Canvas implements Runnable {
     private int w0, h0;
 
     private List<Drawable> drawables = new CopyOnWriteArrayList<>();
+    private Drawable background;
 
     public Display(int w0, int h0, String title) {
 
@@ -37,20 +38,23 @@ public class Display extends Canvas implements Runnable {
 
         createBufferStrategy(3);
 
+        drawThread.setName("draw-01");
         drawThread.setDaemon(true);
         drawThread.start();
     }
 
     public void draw() {
         Graphics g = getBufferStrategy().getDrawGraphics();
+
         g.clearRect(0, 0, w0, h0);
+
+        if (background != null) background.draw(g);
 
         for (Drawable d : drawables) {
             d.draw(g);
         }
 
         getBufferStrategy().show();
-        g.dispose();
     }
 
     @Override
@@ -69,5 +73,13 @@ public class Display extends Canvas implements Runnable {
 
     public List<Drawable> getDrawables() {
         return drawables;
+    }
+
+    public Drawable getBackground_() {
+        return this.background;
+    }
+
+    public void setBackground(Drawable background) {
+        this.background = background;
     }
 }
