@@ -54,7 +54,7 @@ public class LoginFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 TwitchConnection twitchConnection = new TwitchConnection(textFieldName.getText(),
-                        String.valueOf(passwordFieldOAuth.getPassword())/*, textFieldChanel.getText()*/);
+                        String.valueOf(passwordFieldOAuth.getPassword()), textFieldChanel.getText());
 
             }
         });
