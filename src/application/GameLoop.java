@@ -10,8 +10,8 @@ public class GameLoop extends Thread{
     @Override
     public void run() {
         long lastTime = System.nanoTime();
-        final double ammountOfTicks = 60.0;
-        double ns = 1000000000 / ammountOfTicks;
+        final double amountOfTicks = 60.0;
+        double ns = 1000000000 / amountOfTicks;
         double delta = 0;
 
         int updates = 0;
