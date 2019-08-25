@@ -24,15 +24,16 @@ public class GameLoop extends Thread{
             lastTime = now;
 
             if(delta >= 1){
-                update();
-                delta --;
+                delta--;
             }
+
+            update();
 
             frames++;
 
             if(System.currentTimeMillis() - timer > 1000){
                 timer += 1000;
-                System.out.println(updates + "Ticks, FPS: "+ frames);
+                // System.out.println(updates + " Ticks, FPS: "+ frames);
                 updates = 0;
                 frames = 0;
             }
