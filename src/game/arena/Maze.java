@@ -1,6 +1,7 @@
 package game.arena;
 
 import drawing.Drawable;
+import game.Player;
 import game.engine.Entity;
 
 import java.awt.*;
@@ -33,6 +34,52 @@ public class Maze implements Drawable {
         }
 
         generateMaze();
+    }
+
+    public void updateVision(Player player) {
+        int x = (int)player.getPos().getX();
+        int y = (int)player.getPos().getY();
+
+        int tempX = x;
+        int tempY = y;
+
+
+        // right
+        while(tempX++ < size) {
+            Cell nextCell = cells[tempX + tempY * size];
+            nextCell.discovered = true;
+            if(nextCell.borders[Cell.E]) break;
+        }
+
+        tempX = x;
+        tempY = y;
+
+        // left
+        while(tempX-- >= 0) {
+            Cell nextCell = cells[tempX + tempY * size];
+            nextCell.discovered = true;
+            if(nextCell.borders[Cell.W]) break;
+        }
+
+        tempX = x;
+        tempY = y;
+
+        // up
+        while(tempY-- >= 0) {
+            Cell nextCell = cells[tempX + tempY * size];
+            nextCell.discovered = true;
+            if(nextCell.borders[Cell.N]) break;
+        }
+
+        tempX = x;
+        tempY = y;
+
+        // right
+        while(tempY++ < size) {
+            Cell nextCell = cells[tempX + tempY * size];
+            nextCell.discovered = true;
+            if(nextCell.borders[Cell.S]) break;
+        }
     }
 
     private void generateMaze() {

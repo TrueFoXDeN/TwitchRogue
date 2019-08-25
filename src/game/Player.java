@@ -23,4 +23,8 @@ public class Player implements Entity, Drawable {
     public void update() {
 
     }
+
+    public Point2D getPos() {
+        return pos;
+    }
 }
