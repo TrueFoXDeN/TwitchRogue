@@ -28,16 +28,16 @@ public class GamestateHandler {
         Main.display.getDrawables().add(player);
     }
 
-    public void update() {
+    public void update(double delta) {
 
         /*if(twitchConnection != null)
             System.out.println(twitchConnection.getMessages().size());*/
 
         // update all players and other entities
-        player.update();
+        player.update(delta);
 
         for(Entity e: entities) {
-            e.update();
+            e.update(delta);
         }
 
         // finite gamestate machine

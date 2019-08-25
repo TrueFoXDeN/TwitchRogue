@@ -6,42 +6,37 @@ public class GameLoop extends Thread{
 
     // handles the state of the game
     private final GamestateHandler gHandler = new GamestateHandler();
-
+    double delta = 0;
     @Override
     public void run() {
-        long lastTime = System.nanoTime();
-        final double amountOfTicks = 60.0;
-        double ns = 1000000000 / amountOfTicks;
-        double delta = 0;
-
-        int updates = 0;
-        int frames = 0;
-        long timer = System.currentTimeMillis();
+        long lastLoopTime = System.nanoTime();
+        final int TARGET_FPS = 60;
+        final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
+        long lastFpsTime = 0;
 
         while(!isInterrupted()){
             long now = System.nanoTime();
-            delta += (lastTime - now) / ns;
-            lastTime = now;
+            long updateLength = now - lastLoopTime;
+            lastLoopTime = now;
+            double delta = updateLength / ((double)OPTIMAL_TIME);
 
-            if(delta >= 1){
-                delta--;
+            lastFpsTime += updateLength;
+            if(lastFpsTime >= 1000000000){
+                lastFpsTime = 0;
             }
-            update();
 
-            frames++;
+            update(delta);
 
-            if(System.currentTimeMillis() - timer > 1000){
-                timer += 1000;
-                // System.out.println(updates + " Ticks, FPS: "+ frames);
-                updates = 0;
-                frames = 0;
+            try{
+                Thread.sleep((lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000);
+            }catch(Exception e){
             }
         }
 
     }
 
-    private void update(){
-        gHandler.update();
+    private void update(double data){
+        gHandler.update(delta);
     }
 
     public void stopThread(){

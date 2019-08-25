@@ -20,7 +20,7 @@ public class Player implements Entity, Drawable {
     }
 
     @Override
-    public void update() {
+    public void update(double delta) {
 
     }
 }

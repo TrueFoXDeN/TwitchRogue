@@ -1,5 +1,5 @@
 package game.engine;
 
 public interface Entity {
-    void update();
+    void update(double delta);
 }
