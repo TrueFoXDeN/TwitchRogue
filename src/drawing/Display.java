@@ -1,7 +1,11 @@
 package drawing;
 
+import application.LoginFrame;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -17,6 +21,12 @@ public class Display extends Canvas implements Runnable {
     private Drawable background;
 
     public Display(int w0, int h0, String title) {
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         this.w0 = w0;
         this.h0 = h0;
@@ -34,6 +44,23 @@ public class Display extends Canvas implements Runnable {
         contentPane.add(this);
         window.pack();
         window.setLocationRelativeTo(null);
+
+        JMenuBar menuBar = new JMenuBar();
+        window.setJMenuBar(menuBar);
+
+        JMenu mnDatei = new JMenu("Connection");
+        menuBar.add(mnDatei);
+
+        JMenuItem mntmBeenden = new JMenuItem("Login...");
+        mntmBeenden.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                LoginFrame login = new LoginFrame();
+                login.setVisible(true);
+
+            }
+        });
+        mnDatei.add(mntmBeenden);
 
         window.setResizable(false);
         window.setVisible(true);
