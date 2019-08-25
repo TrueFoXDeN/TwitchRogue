@@ -14,7 +14,7 @@ public class Maze implements Drawable {
     private final int MAX_ENEMIES;
 
     // size in which the cells should be drawn
-    public final static int CELL_SIZE = 50;
+    public static int CELL_SIZE = 0;
 
     // items and enemies
     private final List<Entity> entities = new CopyOnWriteArrayList<>();
@@ -23,6 +23,8 @@ public class Maze implements Drawable {
     public Maze(int size, int MAX_ENEMIES) {
         this.size = size;
         this.MAX_ENEMIES = MAX_ENEMIES;
+
+        CELL_SIZE = 720 / size;
 
         cells = new Cell[size * size];
 
