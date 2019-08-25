@@ -30,6 +30,9 @@ public class GamestateHandler {
 
     public void update() {
 
+        /*if(twitchConnection != null)
+            System.out.println(twitchConnection.getMessages().size());*/
+
         // update all players and other entities
         player.update();
 

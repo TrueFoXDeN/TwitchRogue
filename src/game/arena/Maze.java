@@ -113,10 +113,23 @@ public class Maze implements Drawable {
 
     @Override
     public void draw(Graphics g) {
+
+        for (int i = 0; i < cells.length; i++) {
+            Cell cell = cells[i];
+            g.setColor(Color.LIGHT_GRAY);
+            ((Graphics2D) g).setStroke(new BasicStroke(1));
+            g.drawRect(cell.x * CELL_SIZE, cell.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+
         for(int i = 0; i < cells.length; i++) {
             Cell cell = cells[i];
+
             g.setColor(Color.BLACK);
             ((Graphics2D) g).setStroke(new BasicStroke(5));
+            if(!cell.discovered){
+                g.fillRect(cell.x * CELL_SIZE, cell.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            }
+
             if(cell.borders[Cell.N]) {
                 g.drawLine(cell.x * CELL_SIZE, cell.y * CELL_SIZE,
                         (cell.x + 1) * CELL_SIZE, cell.y * CELL_SIZE);
