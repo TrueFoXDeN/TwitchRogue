@@ -1,10 +1,10 @@
 package game.arena;
 
 import drawing.Drawable;
-import game.Player;
 import game.engine.Entity;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -34,18 +34,21 @@ public class Maze implements Drawable {
         }
 
         generateMaze();
+        updateVision(new Point(0, 0));
     }
 
-    public void updateVision(Player player) {
-        int x = (int)player.getPos().getX();
-        int y = (int)player.getPos().getY();
+    public void updateVision(Point2D playerPos) {
+        int x = (int)playerPos.getX();
+        int y = (int)playerPos.getY();
+
+        cells[x + y * size].discovered = true;
 
         int tempX = x;
         int tempY = y;
 
 
         // right
-        while(tempX++ < size) {
+        while(tempX++ < size - 1) {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
             if(nextCell.borders[Cell.E]) break;
@@ -55,7 +58,7 @@ public class Maze implements Drawable {
         tempY = y;
 
         // left
-        while(tempX-- >= 0) {
+        while(tempX-- > 0) {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
             if(nextCell.borders[Cell.W]) break;
@@ -65,7 +68,7 @@ public class Maze implements Drawable {
         tempY = y;
 
         // up
-        while(tempY-- >= 0) {
+        while(tempY-- > 0) {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
             if(nextCell.borders[Cell.N]) break;
@@ -75,7 +78,7 @@ public class Maze implements Drawable {
         tempY = y;
 
         // right
-        while(tempY++ < size) {
+        while(tempY++ < size - 1) {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
             if(nextCell.borders[Cell.S]) break;
