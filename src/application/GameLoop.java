@@ -1,9 +1,10 @@
 package application;
 
-import game.GamestateHandler;
+import game.engine.GamestateHandler;
 
 public class GameLoop extends Thread{
 
+    // handles the state of the game
     private final GamestateHandler gHandler = new GamestateHandler();
 
     @Override

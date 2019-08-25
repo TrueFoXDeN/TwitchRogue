@@ -2,6 +2,6 @@ package drawing;
 
 import java.awt.*;
 
-interface Drawable {
+public interface Drawable {
     void draw(Graphics g);
 }
