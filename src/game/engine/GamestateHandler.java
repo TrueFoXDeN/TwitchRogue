@@ -10,9 +10,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class GamestateHandler {
 
     // current state of the game
-    private GameState gameState = GameState.MENU;
+    // TODO: change back to start in menu state
+    private GameState gameState = GameState.EXPLORE;
 
-    private Maze currentMaze;
+    private Maze currentMaze = new Maze(10, 0);
 
     // entities that live in the current state
     private List<Entity> entities = new CopyOnWriteArrayList<>();
@@ -63,7 +64,9 @@ public class GamestateHandler {
     }
 
     private void updateExplore() {
-
+        if(Main.display.getBackground_() != currentMaze) {
+            Main.display.setBackground(currentMaze);
+        }
     }
 
     private void updateBattle() {
