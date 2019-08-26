@@ -14,6 +14,7 @@ public class Commands {
 
     private Commands(String mnenomic, Command command) {
         this.mnenomic = mnenomic;
+        this.command = command;
     }
 
     public void fire() {
