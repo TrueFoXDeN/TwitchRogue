@@ -1,5 +1,6 @@
 package application;
 
+import drawing.VoteHandler;
 import game.Player;
 import game.engine.GamestateHandler;
 
@@ -26,6 +27,20 @@ public class KeyHandler implements KeyListener {
             GameLoop.gHandler.movePlayer(1, 0);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             GameLoop.gHandler.movePlayer(0, -1);
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_W){
+            VoteHandler.dirVoting[0] ++;
+            GamestateHandler.voteHandler.update();
+        }else if(e.getKeyCode() == KeyEvent.VK_D){
+            VoteHandler.dirVoting[1] ++;
+            GamestateHandler.voteHandler.update();
+        }else if(e.getKeyCode() == KeyEvent.VK_S){
+            VoteHandler.dirVoting[2] ++;
+            GamestateHandler.voteHandler.update();
+        }else if(e.getKeyCode() == KeyEvent.VK_A){
+            VoteHandler.dirVoting[3] ++;
+            GamestateHandler.voteHandler.update();
         }
     }
 

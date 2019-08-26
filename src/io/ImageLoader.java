@@ -44,6 +44,10 @@ public class ImageLoader {
         sprites.put("player_idle_right", sprites.get("player_walk_right_0"));
         sprites.put("player_idle_up", sprites.get("player_walk_up_0"));
 
+        for (int i = 0; i < 4; i++) {
+            sprites.put("arrow_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "ui", "arrow_"+i+".png"))));
+            sprites.put("arrow_active_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "ui", "arrow_active_"+i+".png"))));
+        }
     }
 
     public static void load() {

@@ -1,6 +1,7 @@
 package game.engine;
 
 import application.Main;
+import drawing.VoteHandler;
 import game.Dir;
 import game.Player;
 import game.arena.Maze;
@@ -15,7 +16,7 @@ public class GamestateHandler {
     // TODO: change back to start in menu state
     private GameState gameState = GameState.EXPLORE;
 
-    public static Maze currentMaze = new Maze(25, 20, 0);
+    public static Maze currentMaze = new Maze(15, 10, 0);
 
     // entities that live in the current state
     private List<Entity> entities = new CopyOnWriteArrayList<>();
@@ -24,10 +25,14 @@ public class GamestateHandler {
     private final Player player = new Player();
 
 
+
+    public static VoteHandler voteHandler = new VoteHandler();
+
     public static TwitchConnection twitchConnection;
 
     public GamestateHandler() {
         Main.display.getDrawables().add(player);
+        Main.display.getDrawables().add(voteHandler);
     }
 
     public void update(double delta) {
