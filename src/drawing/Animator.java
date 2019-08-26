@@ -16,7 +16,7 @@ public class Animator {
     private int state = 0;
     private double switchTime;
 
-    private List<BufferedImage> sprites = new ArrayList<>();
+    private List<BufferedImage> sprites;
     private Rule rule;
 
     public void update(double delta) {
