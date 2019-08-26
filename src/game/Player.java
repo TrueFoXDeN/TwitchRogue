@@ -17,7 +17,7 @@ public class Player implements Entity, Drawable {
 
     // position on the map
     private Vector2f pos = new Vector2f(0, 0);
-    private Vector2f nextPos = new Vector2f(0,0);
+    private Vector2f nextPos = new Vector2f(0, 0);
     private Dir direction = Dir.SOUTH;
 
     private final double vel = 0.05;
@@ -27,28 +27,47 @@ public class Player implements Entity, Drawable {
     public Player() {
         String spriteNames[] = {"player_walk_up_", "player_walk_right_", "player_walk_down_", "player_walk_left_"};
         List<BufferedImage> sprites = new ArrayList<>();
-        for(String s: spriteNames) {
-            for(int i = 0; i < 6; i++) {
+        for (String s : spriteNames) {
+            for (int i = 0; i < 6; i++) {
                 sprites.add(ImageLoader.sprites.get(s + i));
             }
         }
 
         animator = new Animator(13, 12.5, sprites, state -> {
-            switch (direction) {
-                case NORTH: {
-                    return ++state % 6;
+            if (pos.equals(nextPos)) {
+                switch (direction) {
+                    case NORTH: {
+                        return 0;
+                    }
+                    case EAST: {
+                        return 6;
+                    }
+                    case SOUTH: {
+                        return 12;
+                    }
+                    case WEST: {
+                        return 18;
+                    }
+                    default:
+                        return 0;
                 }
-                case EAST: {
-                    return ++state % 6 + 6;
+            } else {
+                switch (direction) {
+                    case NORTH: {
+                        return ++state % 6;
+                    }
+                    case EAST: {
+                        return ++state % 6 + 6;
+                    }
+                    case SOUTH: {
+                        return ++state % 6 + 12;
+                    }
+                    case WEST: {
+                        return ++state % 6 + 18;
+                    }
+                    default:
+                        return 0;
                 }
-                case SOUTH: {
-                    return ++state % 6 + 12;
-                }
-                case WEST: {
-                    return ++state % 6 + 18;
-                }
-                default:
-                    return 0;
             }
         });
     }
@@ -62,17 +81,16 @@ public class Player implements Entity, Drawable {
     @Override
     public void update(double delta) {
 
+        animator.update(delta);
         if (Math.abs(nextPos.x - pos.x) > 0.05) {
             pos.x += Math.signum(nextPos.x - pos.x) * vel * delta;
-            animator.update(delta);
         }
 
         if (Math.abs(nextPos.y - pos.y) > 0.05) {
             pos.y += Math.signum(nextPos.y - pos.y) * vel * delta;
-            animator.update(delta);
         }
 
-        if(nextPos.dist(pos) < 0.05 && !nextPos.equals(pos)) {
+        if (nextPos.dist(pos) < 0.05 && !nextPos.equals(pos)) {
             pos = (Vector2f) nextPos.clone();
             GamestateHandler.currentMaze.updateVision(pos);
         }
@@ -80,7 +98,7 @@ public class Player implements Entity, Drawable {
 
 
     public void move(int dx, int dy) {
-        if(pos.equals(nextPos)) {
+        if (pos.equals(nextPos)) {
             animator.flush();
             nextPos.add(new Vector2f(dx, dy));
 
