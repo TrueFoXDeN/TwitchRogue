@@ -29,6 +29,10 @@ public class Player implements Entity, Drawable {
 
     }
 
+    public void move(int dx, int dy){
+        pos.setLocation(pos.getX()+dx, pos.getY()+dy);
+    }
+
     public Point2D getPos() {
         return pos;
     }

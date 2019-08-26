@@ -1,5 +1,6 @@
 package drawing;
 
+import application.KeyHandler;
 import application.LoginFrame;
 
 import javax.swing.*;
@@ -32,7 +33,6 @@ public class Display extends Canvas implements Runnable {
         this.h0 = h0;
 
 
-
         window = new JFrame(title);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Insets insets = window.getInsets();
@@ -44,6 +44,8 @@ public class Display extends Canvas implements Runnable {
         contentPane.add(this);
         window.pack();
         window.setLocationRelativeTo(null);
+        window.addKeyListener(new KeyHandler());
+        window.requestFocus();
 
         JMenuBar menuBar = new JMenuBar();
         window.setJMenuBar(menuBar);

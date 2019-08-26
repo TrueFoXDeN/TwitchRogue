@@ -6,7 +6,7 @@ import io.ImageLoader;
 public class GameLoop extends Thread{
 
     // handles the state of the game
-    private final GamestateHandler gHandler = new GamestateHandler();
+    public static final GamestateHandler gHandler = new GamestateHandler();
     double delta = 0;
     @Override
     public void run() {
