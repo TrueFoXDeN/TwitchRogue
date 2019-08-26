@@ -26,7 +26,10 @@ public class Animator {
         if(currTime <= 0) {
             currTime = switchTime;
         }
+    }
 
+    public BufferedImage getSprite() {
+        return sprites.get(state);
     }
 
     @FunctionalInterface
