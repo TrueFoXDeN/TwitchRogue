@@ -3,11 +3,12 @@ package application;
 import game.engine.GamestateHandler;
 import io.ImageLoader;
 
-public class GameLoop extends Thread{
+public class GameLoop extends Thread {
 
     // handles the state of the game
     private final GamestateHandler gHandler = new GamestateHandler();
     double delta = 0;
+
     @Override
     public void run() {
 
@@ -18,28 +19,28 @@ public class GameLoop extends Thread{
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
         long lastFpsTime = 0;
 
-        while(!isInterrupted()){
+        while (!isInterrupted()) {
             long now = System.nanoTime();
             long updateLength = now - lastLoopTime;
             lastLoopTime = now;
-            double delta = updateLength / ((double)OPTIMAL_TIME);
+            double delta = updateLength / ((double) OPTIMAL_TIME);
 
             lastFpsTime += updateLength;
-            if(lastFpsTime >= 1000000000){
+            if (lastFpsTime >= 1000000000) {
                 lastFpsTime = 0;
             }
 
             update(delta);
 
-            try{
+            try {
                 Thread.sleep((lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000);
-            }catch(Exception e){
+            } catch (Exception e) {
             }
         }
 
     }
 
-    private void update(double data){
+    private void update(double data) {
         gHandler.update(delta);
     }
 
@@ -47,7 +48,7 @@ public class GameLoop extends Thread{
         ImageLoader.load();
     }
 
-    public void stopThread(){
+    public void stopThread() {
         interrupt();
     }
 }

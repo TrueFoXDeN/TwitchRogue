@@ -31,8 +31,6 @@ public class Display extends Canvas implements Runnable {
         this.w0 = w0;
         this.h0 = h0;
 
-
-
         window = new JFrame(title);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Insets insets = window.getInsets();
