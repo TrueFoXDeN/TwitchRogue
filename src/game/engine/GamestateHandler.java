@@ -88,6 +88,10 @@ public class GamestateHandler {
 
     }
 
+    public void movePlayer(int dx, int dy){
+        player.move(dx, dy);
+    }
+
     public Player getPlayer() {
         return player;
     }
