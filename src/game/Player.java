@@ -15,6 +15,7 @@ public class Player implements Entity, Drawable {
     // position on the map
     private Vector2f pos = new Vector2f(0, 0);
     private Vector2f nextPos = new Vector2f(0,0);
+    private Dir direction = Dir.SOUTH;
 
     private final double vel = 0.05;
 
@@ -45,6 +46,12 @@ public class Player implements Entity, Drawable {
     public void move(int dx, int dy) {
         if(pos.equals(nextPos))
             nextPos.add(new Vector2f(dx ,dy));
+
+        if(dx > 0) direction = Dir.EAST;
+        else if(dx < 0) direction = Dir.WEST;
+
+        if(dy > 0) direction = Dir.SOUTH;
+        else if(dy < 0) direction = Dir.NORTH;
     }
 
     public Vector2f getPos() {
