@@ -195,7 +195,7 @@ public class Maze implements Drawable {
 
         for (int i = 0; i < cells.length; i++) {
             Cell cell = cells[i];
-            g.drawImage(ImageLoader.sprites.get("cobble"),cell.x * CELL_SIZE, cell.y * CELL_SIZE,CELL_SIZE,CELL_SIZE,null );
+            g.drawImage(ImageLoader.sprites.get("cobble"), cell.x * CELL_SIZE, cell.y * CELL_SIZE, CELL_SIZE, CELL_SIZE, null);
            /* g.setColor(Color.GREEN);
             ((Graphics2D) g).setStroke(new BasicStroke(1));
             g.drawRect(cell.x * CELL_SIZE, cell.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);*/
@@ -206,13 +206,19 @@ public class Maze implements Drawable {
 
             ((Graphics2D) g).setStroke(new BasicStroke(5));
             if (!cell.discovered) {
-                g.setColor(Color.BLACK);
+                g.setColor(new Color(35, 35, 35));
                 if (cell.halfVisible) {
                     g.setColor(new Color(0, 0, 0, 125));
                 }
                 g.fillRect(cell.x * CELL_SIZE, cell.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
 
+            //g.setColor(new Color(24, 24, 24));
+            if (cell.discovered || cell.halfVisible) {
+                g.setColor(new Color(0, 0, 0));
+            } else {
+                g.setColor(new Color(35, 35, 35));
+            }
             if (cell.borders[Cell.N]) {
                 g.drawLine(cell.x * CELL_SIZE, cell.y * CELL_SIZE,
                         (cell.x + 1) * CELL_SIZE, cell.y * CELL_SIZE);

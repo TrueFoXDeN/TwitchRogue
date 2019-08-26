@@ -16,6 +16,8 @@ public class ImageLoader {
         sprites.put("cobble",
                 ImageIO.read(Files.newInputStream(Paths.get("res", "world", "bg_cobble.png"))));
         sprites.put("wall", ImageIO.read(Files.newInputStream(Paths.get("res", "world", "bg_wall.png"))));
+
+        sprites.put("player_idle_down", ImageIO.read(Files.newInputStream(Paths.get("res", "player", "spr_player_down.png"))).getSubimage(0,0,14,21));
     }
 
     public static void load() {
