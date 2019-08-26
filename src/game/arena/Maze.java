@@ -35,6 +35,24 @@ public class Maze implements Drawable {
             cells[i] = new Cell(i % size, i / size);
         }
 
+        for (int i = 0; i < cells.length; ++i) {
+            Cell cell = cells[i];
+
+            if (cell.x > 0) {
+                cell.neighbors[Cell.W] = cells[cell.x - 1 + cell.y * size];
+            }
+            if (cell.x < size - 1) {
+                cell.neighbors[Cell.E] = cells[cell.x + 1 + cell.y * size];
+            }
+            if (cell.y > 0) {
+                cell.neighbors[Cell.N] = cells[cell.x + (cell.y - 1) * size];
+            }
+            if (cell.y > size - 1) {
+                cell.neighbors[Cell.S] = cells[cell.x + (cell.y + 1) * size];
+            }
+        }
+
+
         generateMaze();
         updateVision(new Point(0, 0));
     }
@@ -203,39 +221,60 @@ public class Maze implements Drawable {
 
         for (int i = 0; i < cells.length; i++) {
             Cell cell = cells[i];
+            final int wallWidth = 5;
 
-            ((Graphics2D) g).setStroke(new BasicStroke(5));
+            ((Graphics2D) g).setStroke(new BasicStroke(wallWidth));
             if (!cell.discovered) {
                 g.setColor(new Color(35, 35, 35));
                 if (cell.halfVisible) {
                     g.setColor(new Color(0, 0, 0, 125));
                 }
-                g.fillRect(cell.x * CELL_SIZE, cell.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                g.fillRect(cell.x * CELL_SIZE, cell.y * CELL_SIZE,
+                        CELL_SIZE, CELL_SIZE);
             }
 
-            //g.setColor(new Color(24, 24, 24));
-            if (cell.discovered || cell.halfVisible) {
-                g.setColor(new Color(0, 0, 0));
-            } else {
-                g.setColor(new Color(35, 35, 35));
-            }
+            g.setColor(((cell.neighbors[Cell.N] != null
+                    && (cell.neighbors[Cell.N].discovered
+                    || cell.neighbors[Cell.N].halfVisible))
+                    || cell.discovered || cell.halfVisible) ? Color.BLACK : new Color(35, 35, 35));
+
             if (cell.borders[Cell.N]) {
                 g.drawLine(cell.x * CELL_SIZE, cell.y * CELL_SIZE,
                         (cell.x + 1) * CELL_SIZE, cell.y * CELL_SIZE);
             }
+
+            g.setColor(((cell.neighbors[Cell.E] != null
+                    && (cell.neighbors[Cell.E].discovered
+                    || cell.neighbors[Cell.E].halfVisible))
+                    || cell.discovered || cell.halfVisible) ? Color.BLACK : new Color(35, 35, 35));
+
             if (cell.borders[Cell.E]) {
                 g.drawLine((cell.x + 1) * CELL_SIZE, cell.y * CELL_SIZE,
                         (cell.x + 1) * CELL_SIZE, (cell.y + 1) * CELL_SIZE);
             }
+
+            g.setColor(((cell.neighbors[Cell.S] != null
+                    && (cell.neighbors[Cell.S].discovered
+                    || cell.neighbors[Cell.S].halfVisible))
+                    || cell.discovered || cell.halfVisible) ? Color.BLACK : new Color(35, 35, 35));
+
+
             if (cell.borders[Cell.S]) {
                 g.drawLine(cell.x * CELL_SIZE, (cell.y + 1) * CELL_SIZE,
                         (cell.x + 1) * CELL_SIZE, (cell.y + 1) * CELL_SIZE);
             }
+
+            g.setColor(((cell.neighbors[Cell.W] != null
+                    && (cell.neighbors[Cell.W].discovered
+                    || cell.neighbors[Cell.W].halfVisible))
+                    || cell.discovered || cell.halfVisible) ? Color.BLACK : new Color(35, 35, 35));
+
             if (cell.borders[Cell.W]) {
                 g.drawLine(cell.x * CELL_SIZE, cell.y * CELL_SIZE,
                         cell.x * CELL_SIZE, (cell.y + 1) * CELL_SIZE);
             }
         }
+
     }
 
     private class Cell {
@@ -244,6 +283,7 @@ public class Maze implements Drawable {
         int x, y;
         boolean[] borders = {true, true, true, true};
         boolean visited = false;
+        Cell neighbors[] = new Cell[4];
 
         boolean discovered = false;
         boolean halfVisible = false;
