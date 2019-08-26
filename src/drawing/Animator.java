@@ -6,10 +6,11 @@ import java.util.List;
 
 public class Animator {
 
-    public Animator(double switchTime, List<BufferedImage> sprites, Rule rule) {
+    public Animator(int initialState, double switchTime, List<BufferedImage> sprites, Rule rule) {
         this.switchTime = switchTime;
         this.sprites = sprites;
         this.rule = rule;
+        this.state = initialState;
     }
 
     private double currTime = 0;

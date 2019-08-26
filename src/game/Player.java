@@ -33,7 +33,7 @@ public class Player implements Entity, Drawable {
             }
         }
 
-        animator = new Animator(12.5, sprites, state -> {
+        animator = new Animator(13, 12.5, sprites, state -> {
             switch (direction) {
                 case NORTH: {
                     return ++state % 6;
@@ -62,14 +62,14 @@ public class Player implements Entity, Drawable {
     @Override
     public void update(double delta) {
 
-        animator.update(delta);
-
         if (Math.abs(nextPos.x - pos.x) > 0.05) {
             pos.x += Math.signum(nextPos.x - pos.x) * vel * delta;
+            animator.update(delta);
         }
 
         if (Math.abs(nextPos.y - pos.y) > 0.05) {
             pos.y += Math.signum(nextPos.y - pos.y) * vel * delta;
+            animator.update(delta);
         }
 
         if(nextPos.dist(pos) < 0.05 && !nextPos.equals(pos)) {
