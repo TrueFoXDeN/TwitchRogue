@@ -9,11 +9,11 @@ public class Commands {
             new Commands("moveup", () -> {System.out.println("Hello World");})
     };
 
-    private String mnenomic;
+    private String mnemonic;
     private Command command;
 
     private Commands(String mnenomic, Command command) {
-        this.mnenomic = mnenomic;
+        this.mnemonic = mnenomic;
         this.command = command;
     }
 
@@ -22,7 +22,7 @@ public class Commands {
     }
 
     public boolean match(String cmd) {
-        return mnenomic.equalsIgnoreCase(cmd);
+        return mnemonic.equalsIgnoreCase(cmd);
     }
 
     @FunctionalInterface
