@@ -16,15 +16,18 @@ public class Vector2f {
         y += o.y;
     }
 
-    public void sub(Vector2f o) {
-        x -= o.x;
-        y -= o.y;
+    public Vector2f add_(Vector2f o) {
+        return new Vector2f(x + o.x, y + o.y);
     }
 
     public double dist(Vector2f o) {
         double distX = x - o.x;
         double distY = y - o.y;
         return Math.sqrt(distX * distX + distY * distY);
+    }
+
+    public int to1DIndex(int size) {
+        return (int)x + (int)y * size;
     }
 
     @Override

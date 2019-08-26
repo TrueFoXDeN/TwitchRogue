@@ -1,6 +1,7 @@
 package game.arena;
 
 import drawing.Drawable;
+import game.Dir;
 import game.engine.Entity;
 import geometry.Vector2f;
 import io.ImageLoader;
@@ -40,16 +41,16 @@ public class Maze implements Drawable {
             Cell cell = cells[i];
 
             if (cell.x > 0) {
-                cell.neighbors[Cell.W] = cells[cell.x - 1 + cell.y * size];
+                cell.neighbors[Dir.WEST.id] = cells[cell.x - 1 + cell.y * size];
             }
             if (cell.x < size - 1) {
-                cell.neighbors[Cell.E] = cells[cell.x + 1 + cell.y * size];
+                cell.neighbors[Dir.EAST.id] = cells[cell.x + 1 + cell.y * size];
             }
             if (cell.y > 0) {
-                cell.neighbors[Cell.N] = cells[cell.x + (cell.y - 1) * size];
+                cell.neighbors[Dir.NORTH.id] = cells[cell.x + (cell.y - 1) * size];
             }
             if (cell.y > size - 1) {
-                cell.neighbors[Cell.S] = cells[cell.x + (cell.y + 1) * size];
+                cell.neighbors[Dir.SOUTH.id] = cells[cell.x + (cell.y + 1) * size];
             }
         }
 
@@ -58,27 +59,31 @@ public class Maze implements Drawable {
         updateVision(new Vector2f(0, 0));
     }
 
+    public boolean canMove(Vector2f playerPos, Dir dir) {
+        return cells[playerPos.to1DIndex(size)].borders[dir.id];
+    }
+
     public void updateVision(Vector2f playerPos) {
         int x = (int) playerPos.x;
         int y = (int) playerPos.y;
 
         var revealNeighbor = new Function<Vector2f, Void>() {
             @Override
-            public Void apply(Vector2f point2D) {
-                int x = (int) point2D.x;
-                int y = (int) point2D.y;
+            public Void apply(Vector2f playerPos1) {
+                int x = (int) playerPos1.x;
+                int y = (int) playerPos1.y;
 
-                if (x > 0 && !cells[x + y * size].borders[Cell.W])
-                    cells[x - 1 + y * size].halfVisible = true;
+                if (playerPos1.x > 0 && !cells[playerPos1.to1DIndex(size)].borders[Dir.WEST.id])
+                    cells[playerPos1.add_(new Vector2f(-1, 0)).to1DIndex(size)].halfVisible = true;
 
-                if (x < size - 1 && !cells[x + y * size].borders[Cell.E])
-                    cells[x + 1 + y * size].halfVisible = true;
+                if (playerPos1.x < size - 1 && !cells[x + y * size].borders[Dir.EAST.id])
+                    cells[playerPos1.add_(new Vector2f(1, 0)).to1DIndex(size)].halfVisible = true;
 
-                if (y > 0 && !cells[x + y * size].borders[Cell.N])
-                    cells[x + (y - 1) * size].halfVisible = true;
+                if (playerPos1.y > 0 && !cells[x + y * size].borders[Dir.NORTH.id])
+                    cells[playerPos1.add_(new Vector2f(0, -1)).to1DIndex(size)].halfVisible = true;
 
-                if (y < size - 1 && !cells[x + y * size].borders[Cell.S])
-                    cells[x + (y + 1) * size].halfVisible = true;
+                if (playerPos1.y < size - 1 && !cells[x + y * size].borders[Dir.SOUTH.id])
+                    cells[playerPos1.add_(new Vector2f(0, 1)).to1DIndex(size)].halfVisible = true;
 
                 return null;
             }
@@ -96,7 +101,7 @@ public class Maze implements Drawable {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
             revealNeighbor.apply(new Vector2f(tempX, tempY));
-            if (nextCell.borders[Cell.E]) break;
+            if (nextCell.borders[Dir.EAST.id]) break;
         } while (tempX++ < size - 1);
 
         tempX = x;
@@ -107,7 +112,7 @@ public class Maze implements Drawable {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
             revealNeighbor.apply(new Vector2f(tempX, tempY));
-            if (nextCell.borders[Cell.W]) break;
+            if (nextCell.borders[Dir.WEST.id]) break;
         } while (tempX-- > 0);
 
         tempX = x;
@@ -118,7 +123,7 @@ public class Maze implements Drawable {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
             revealNeighbor.apply(new Vector2f(tempX, tempY));
-            if (nextCell.borders[Cell.N]) break;
+            if (nextCell.borders[Dir.NORTH.id]) break;
         } while (tempY-- > 0);
 
         tempX = x;
@@ -129,7 +134,7 @@ public class Maze implements Drawable {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
             revealNeighbor.apply(new Vector2f(tempX, tempY));
-            if (nextCell.borders[Cell.S]) break;
+            if (nextCell.borders[Dir.SOUTH.id]) break;
         } while (tempY++ < size - 1);
     }
 
@@ -182,19 +187,19 @@ public class Maze implements Drawable {
                 // remove the walls between the cells
                 if (x == nextCell.x) {
                     if (y < nextCell.y) {
-                        current.borders[Cell.S] = false;
-                        nextCell.borders[Cell.N] = false;
+                        current.borders[Dir.SOUTH.id] = false;
+                        nextCell.borders[Dir.NORTH.id] = false;
                     } else {
-                        current.borders[Cell.N] = false;
-                        nextCell.borders[Cell.S] = false;
+                        current.borders[Dir.NORTH.id] = false;
+                        nextCell.borders[Dir.SOUTH.id] = false;
                     }
                 } else {
                     if (x < nextCell.x) {
-                        current.borders[Cell.E] = false;
-                        nextCell.borders[Cell.W] = false;
+                        current.borders[Dir.EAST.id] = false;
+                        nextCell.borders[Dir.WEST.id] = false;
                     } else {
-                        current.borders[Cell.W] = false;
-                        nextCell.borders[Cell.E] = false;
+                        current.borders[Dir.WEST.id] = false;
+                        nextCell.borders[Dir.EAST.id] = false;
                     }
                 }
 
@@ -234,43 +239,43 @@ public class Maze implements Drawable {
                         CELL_SIZE, CELL_SIZE);
             }
 
-            g.setColor(((cell.neighbors[Cell.N] != null
-                    && (cell.neighbors[Cell.N].discovered
-                    || cell.neighbors[Cell.N].halfVisible))
+            g.setColor(((cell.neighbors[Dir.NORTH.id] != null
+                    && (cell.neighbors[Dir.NORTH.id].discovered
+                    || cell.neighbors[Dir.NORTH.id].halfVisible))
                     || cell.discovered || cell.halfVisible) ? Color.BLACK : new Color(35, 35, 35));
 
-            if (cell.borders[Cell.N]) {
+            if (cell.borders[Dir.NORTH.id]) {
                 g.drawLine(cell.x * CELL_SIZE, cell.y * CELL_SIZE,
                         (cell.x + 1) * CELL_SIZE, cell.y * CELL_SIZE);
             }
 
-            g.setColor(((cell.neighbors[Cell.E] != null
-                    && (cell.neighbors[Cell.E].discovered
-                    || cell.neighbors[Cell.E].halfVisible))
+            g.setColor(((cell.neighbors[Dir.EAST.id] != null
+                    && (cell.neighbors[Dir.EAST.id].discovered
+                    || cell.neighbors[Dir.EAST.id].halfVisible))
                     || cell.discovered || cell.halfVisible) ? Color.BLACK : new Color(35, 35, 35));
 
-            if (cell.borders[Cell.E]) {
+            if (cell.borders[Dir.EAST.id]) {
                 g.drawLine((cell.x + 1) * CELL_SIZE, cell.y * CELL_SIZE,
                         (cell.x + 1) * CELL_SIZE, (cell.y + 1) * CELL_SIZE);
             }
 
-            g.setColor(((cell.neighbors[Cell.S] != null
-                    && (cell.neighbors[Cell.S].discovered
-                    || cell.neighbors[Cell.S].halfVisible))
+            g.setColor(((cell.neighbors[Dir.SOUTH.id] != null
+                    && (cell.neighbors[Dir.SOUTH.id].discovered
+                    || cell.neighbors[Dir.SOUTH.id].halfVisible))
                     || cell.discovered || cell.halfVisible) ? Color.BLACK : new Color(35, 35, 35));
 
 
-            if (cell.borders[Cell.S]) {
+            if (cell.borders[Dir.SOUTH.id]) {
                 g.drawLine(cell.x * CELL_SIZE, (cell.y + 1) * CELL_SIZE,
                         (cell.x + 1) * CELL_SIZE, (cell.y + 1) * CELL_SIZE);
             }
 
-            g.setColor(((cell.neighbors[Cell.W] != null
-                    && (cell.neighbors[Cell.W].discovered
-                    || cell.neighbors[Cell.W].halfVisible))
+            g.setColor(((cell.neighbors[Dir.WEST.id] != null
+                    && (cell.neighbors[Dir.WEST.id].discovered
+                    || cell.neighbors[Dir.WEST.id].halfVisible))
                     || cell.discovered || cell.halfVisible) ? Color.BLACK : new Color(35, 35, 35));
 
-            if (cell.borders[Cell.W]) {
+            if (cell.borders[Dir.WEST.id]) {
                 g.drawLine(cell.x * CELL_SIZE, cell.y * CELL_SIZE,
                         cell.x * CELL_SIZE, (cell.y + 1) * CELL_SIZE);
             }
@@ -279,8 +284,6 @@ public class Maze implements Drawable {
     }
 
     private class Cell {
-        final static int N = 0, E = 1, S = 2, W = 3;
-
         int x, y;
         boolean[] borders = {true, true, true, true};
         boolean visited = false;

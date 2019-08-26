@@ -14,7 +14,7 @@ public class GamestateHandler {
     // TODO: change back to start in menu state
     private GameState gameState = GameState.EXPLORE;
 
-    public static Maze currentMaze = new Maze(10, 0);
+    public static Maze currentMaze = new Maze(20, 0);
 
     // entities that live in the current state
     private List<Entity> entities = new CopyOnWriteArrayList<>();
@@ -37,12 +37,12 @@ public class GamestateHandler {
         // update all players and other entities
         player.update(delta);
 
-        for(Entity e: entities) {
+        for (Entity e : entities) {
             e.update(delta);
         }
 
         // finite gamestate machine
-        switch(gameState) {
+        switch (gameState) {
             case MENU: {
                 updateMenu();
                 break;
@@ -71,7 +71,7 @@ public class GamestateHandler {
     }
 
     private void updateExplore() {
-        if(Main.display.getBackground_() != currentMaze) {
+        if (Main.display.getBackground_() != currentMaze) {
             Main.display.setBackground(currentMaze);
         }
     }
