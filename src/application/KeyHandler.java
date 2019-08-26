@@ -27,8 +27,6 @@ public class KeyHandler implements KeyListener {
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             p.move(0, -1);
         }
-
-        GamestateHandler.currentMaze.updateVision(p.getPos());
     }
 
     @Override
