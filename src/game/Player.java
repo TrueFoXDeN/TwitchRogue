@@ -1,5 +1,6 @@
 package game;
 
+import drawing.Animator;
 import drawing.Drawable;
 import game.arena.Maze;
 import game.engine.Entity;
@@ -8,7 +9,9 @@ import geometry.Vector2f;
 import io.ImageLoader;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player implements Entity, Drawable {
 
@@ -18,14 +21,32 @@ public class Player implements Entity, Drawable {
 
     private final double vel = 0.05;
 
+    private final Animator animator;
+
+    public Player() {
+        String spriteNames[] = {"player_walk_up_", "player_walk_right_", "player_walk_down_", "player_walk_left_"};
+        List<BufferedImage> sprites = new ArrayList<>();
+        for(String s: spriteNames) {
+            for(int i = 0; i <= 6; ++i) {
+                sprites.add(ImageLoader.sprites.get(s + i));
+            }
+        }
+
+        animator = new Animator(12.5, sprites, state -> {
+            return (state == 0) ? 1 : 0;
+        });
+    }
+
     @Override
     public void draw(Graphics g) {
-        g.drawImage(ImageLoader.sprites.get("player_idle_down"), (int) ((pos.x + 0.2) * Maze.CELL_SIZE),
+        g.drawImage(animator.getSprite(), (int) ((pos.x + 0.2) * Maze.CELL_SIZE),
                 (int) ((pos.y) * Maze.CELL_SIZE), (int) (Maze.CELL_SIZE / 1.5), (int) ((Maze.CELL_SIZE / 1.5) * 1.5), null);
     }
 
     @Override
     public void update(double delta) {
+
+        animator.update(delta);
 
         if (Math.abs(nextPos.x - pos.x) > 0.05) {
             pos.x += Math.signum(nextPos.x - pos.x) * vel * delta;

@@ -21,10 +21,10 @@ public class Animator {
 
     public void update(double delta) {
         currTime -= delta;
-        rule.fire(state);
 
         if(currTime <= 0) {
             currTime = switchTime;
+            state = rule.advance(state);
         }
     }
 
@@ -34,6 +34,6 @@ public class Animator {
 
     @FunctionalInterface
     public interface Rule {
-        void fire(int state);
+        int advance(int state);
     }
 }
