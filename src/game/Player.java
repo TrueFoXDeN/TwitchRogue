@@ -33,7 +33,7 @@ public class Player implements Entity, Drawable {
             }
         }
 
-        animator = new Animator(13, 12.5, sprites, state -> {
+        animator = new Animator(13, 4, sprites, state -> {
             if (pos.equals(nextPos)) {
                 switch (direction) {
                     case NORTH: {
