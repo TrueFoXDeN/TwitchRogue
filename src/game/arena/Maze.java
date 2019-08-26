@@ -7,7 +7,6 @@ import geometry.Vector2f;
 import io.ImageLoader;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,7 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Maze implements Drawable {
-    private int size;
+    private int width, height;
     private final int MAX_ENEMIES;
 
     // size in which the cells should be drawn
@@ -25,32 +24,33 @@ public class Maze implements Drawable {
     private final List<Entity> entities = new CopyOnWriteArrayList<>();
     private final Cell[] cells;
 
-    public Maze(int size, int MAX_ENEMIES) {
-        this.size = size;
+    public Maze(int width, int height, int MAX_ENEMIES) {
+        this.width = width;
+        this.height = height;
         this.MAX_ENEMIES = MAX_ENEMIES;
 
-        CELL_SIZE = 720 / size;
+        CELL_SIZE = 720 / height;
 
-        cells = new Cell[size * size];
+        cells = new Cell[width * height];
 
         for (int i = 0; i < cells.length; ++i) {
-            cells[i] = new Cell(i % size, i / size);
+            cells[i] = new Cell(i % width, i / width);
         }
 
         for (int i = 0; i < cells.length; ++i) {
             Cell cell = cells[i];
 
             if (cell.x > 0) {
-                cell.neighbors[Dir.WEST.id] = cells[cell.x - 1 + cell.y * size];
+                cell.neighbors[Dir.WEST.id] = cells[cell.x - 1 + cell.y * width];
             }
-            if (cell.x < size - 1) {
-                cell.neighbors[Dir.EAST.id] = cells[cell.x + 1 + cell.y * size];
+            if (cell.x < width - 1) {
+                cell.neighbors[Dir.EAST.id] = cells[cell.x + 1 + cell.y * width];
             }
             if (cell.y > 0) {
-                cell.neighbors[Dir.NORTH.id] = cells[cell.x + (cell.y - 1) * size];
+                cell.neighbors[Dir.NORTH.id] = cells[cell.x + (cell.y - 1) * width];
             }
-            if (cell.y > size - 1) {
-                cell.neighbors[Dir.SOUTH.id] = cells[cell.x + (cell.y + 1) * size];
+            if (cell.y > height - 1) {
+                cell.neighbors[Dir.SOUTH.id] = cells[cell.x + (cell.y + 1) * width];
             }
         }
 
@@ -60,7 +60,7 @@ public class Maze implements Drawable {
     }
 
     public boolean canMove(Vector2f playerPos, Dir dir) {
-        return !cells[playerPos.to1DIndex(size)].borders[dir.id];
+        return !cells[playerPos.to1DIndex(width)].borders[dir.id];
     }
 
     public void updateVision(Vector2f playerPos) {
@@ -73,23 +73,23 @@ public class Maze implements Drawable {
                 int x = (int) playerPos1.x;
                 int y = (int) playerPos1.y;
 
-                if (playerPos1.x > 0 && !cells[playerPos1.to1DIndex(size)].borders[Dir.WEST.id])
-                    cells[playerPos1.add_(new Vector2f(-1, 0)).to1DIndex(size)].halfVisible = true;
+                if (playerPos1.x > 0 && !cells[playerPos1.to1DIndex(width)].borders[Dir.WEST.id])
+                    cells[playerPos1.add_(new Vector2f(-1, 0)).to1DIndex(width)].halfVisible = true;
 
-                if (playerPos1.x < size - 1 && !cells[x + y * size].borders[Dir.EAST.id])
-                    cells[playerPos1.add_(new Vector2f(1, 0)).to1DIndex(size)].halfVisible = true;
+                if (playerPos1.x < width - 1 && !cells[x + y * width].borders[Dir.EAST.id])
+                    cells[playerPos1.add_(new Vector2f(1, 0)).to1DIndex(width)].halfVisible = true;
 
-                if (playerPos1.y > 0 && !cells[x + y * size].borders[Dir.NORTH.id])
-                    cells[playerPos1.add_(new Vector2f(0, -1)).to1DIndex(size)].halfVisible = true;
+                if (playerPos1.y > 0 && !cells[x + y * width].borders[Dir.NORTH.id])
+                    cells[playerPos1.add_(new Vector2f(0, -1)).to1DIndex(width)].halfVisible = true;
 
-                if (playerPos1.y < size - 1 && !cells[x + y * size].borders[Dir.SOUTH.id])
-                    cells[playerPos1.add_(new Vector2f(0, 1)).to1DIndex(size)].halfVisible = true;
+                if (playerPos1.y < height - 1 && !cells[x + y * width].borders[Dir.SOUTH.id])
+                    cells[playerPos1.add_(new Vector2f(0, 1)).to1DIndex(width)].halfVisible = true;
 
                 return null;
             }
         };
 
-        cells[x + y * size].discovered = true;
+        cells[x + y * width].discovered = true;
         revealNeighbor.apply(playerPos);
 
         int tempX = x;
@@ -98,18 +98,18 @@ public class Maze implements Drawable {
 
         // right
         do {
-            Cell nextCell = cells[tempX + tempY * size];
+            Cell nextCell = cells[tempX + tempY * width];
             nextCell.discovered = true;
             revealNeighbor.apply(new Vector2f(tempX, tempY));
             if (nextCell.borders[Dir.EAST.id]) break;
-        } while (tempX++ < size - 1);
+        } while (tempX++ < width - 1);
 
         tempX = x;
         tempY = y;
 
         // left
         do {
-            Cell nextCell = cells[tempX + tempY * size];
+            Cell nextCell = cells[tempX + tempY * width];
             nextCell.discovered = true;
             revealNeighbor.apply(new Vector2f(tempX, tempY));
             if (nextCell.borders[Dir.WEST.id]) break;
@@ -120,7 +120,7 @@ public class Maze implements Drawable {
 
         // up
         do {
-            Cell nextCell = cells[tempX + tempY * size];
+            Cell nextCell = cells[tempX + tempY * width];
             nextCell.discovered = true;
             revealNeighbor.apply(new Vector2f(tempX, tempY));
             if (nextCell.borders[Dir.NORTH.id]) break;
@@ -131,11 +131,11 @@ public class Maze implements Drawable {
 
         // right
         do {
-            Cell nextCell = cells[tempX + tempY * size];
+            Cell nextCell = cells[tempX + tempY * width];
             nextCell.discovered = true;
             revealNeighbor.apply(new Vector2f(tempX, tempY));
             if (nextCell.borders[Dir.SOUTH.id]) break;
-        } while (tempY++ < size - 1);
+        } while (tempY++ < height - 1);
     }
 
     private void generateMaze() {
@@ -149,12 +149,12 @@ public class Maze implements Drawable {
         // top to bottom
         if (rand.nextBoolean()) {
             // to avoid that the corners are the initial cell
-            int x1 = rand.nextInt(size - 1) + 1;
+            int x1 = rand.nextInt(width - 1) + 1;
             current = cells[x1];
             // left to right
         } else {
             // to avoid that the corners are the initial cell
-            int y1 = rand.nextInt(size - 1) + 1;
+            int y1 = rand.nextInt(height - 1) + 1;
             current = cells[y1];
         }
 
@@ -162,15 +162,15 @@ public class Maze implements Drawable {
         while (Arrays.stream(cells).anyMatch(c -> !c.visited)) {
             int x = current.x, y = current.y;
 
-            cells[x + y * size].visited = true;
+            cells[x + y * width].visited = true;
 
             // get all neighbors
             List<Cell> neighbors = new ArrayList<>(4);
 
-            if (x != 0) neighbors.add(cells[x - 1 + y * size]);
-            if (x != size - 1) neighbors.add(cells[x + 1 + y * size]);
-            if (y != 0) neighbors.add(cells[x + (y - 1) * size]);
-            if (y != size - 1) neighbors.add(cells[x + (y + 1) * size]);
+            if (x != 0) neighbors.add(cells[x - 1 + y * width]);
+            if (x != width - 1) neighbors.add(cells[x + 1 + y * width]);
+            if (y != 0) neighbors.add(cells[x + (y - 1) * width]);
+            if (y != height - 1) neighbors.add(cells[x + (y + 1) * width]);
 
             // get all unvisited neighbors
             neighbors = neighbors.stream().filter(c -> !c.visited).collect(Collectors.toList());

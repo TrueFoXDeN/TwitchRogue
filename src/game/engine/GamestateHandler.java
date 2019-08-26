@@ -15,7 +15,7 @@ public class GamestateHandler {
     // TODO: change back to start in menu state
     private GameState gameState = GameState.EXPLORE;
 
-    public static Maze currentMaze = new Maze(20, 0);
+    public static Maze currentMaze = new Maze(25, 20, 0);
 
     // entities that live in the current state
     private List<Entity> entities = new CopyOnWriteArrayList<>();
