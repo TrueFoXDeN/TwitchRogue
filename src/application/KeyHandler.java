@@ -19,13 +19,13 @@ public class KeyHandler implements KeyListener {
 
         Player p = GameLoop.gHandler.getPlayer();
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            p.move(0, 1);
+            GameLoop.gHandler.movePlayer(0, 1);
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            p.move(-1, 0);
+            GameLoop.gHandler.movePlayer(-1, 0);
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            p.move(1, 0);
+            GameLoop.gHandler.movePlayer(1, 0);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            p.move(0, -1);
+            GameLoop.gHandler.movePlayer(0, -1);
         }
     }
 

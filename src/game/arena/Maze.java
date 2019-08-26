@@ -60,7 +60,7 @@ public class Maze implements Drawable {
     }
 
     public boolean canMove(Vector2f playerPos, Dir dir) {
-        return cells[playerPos.to1DIndex(size)].borders[dir.id];
+        return !cells[playerPos.to1DIndex(size)].borders[dir.id];
     }
 
     public void updateVision(Vector2f playerPos) {

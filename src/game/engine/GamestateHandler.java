@@ -1,6 +1,7 @@
 package game.engine;
 
 import application.Main;
+import game.Dir;
 import game.Player;
 import game.arena.Maze;
 import io.networking.TwitchConnection;
@@ -89,7 +90,15 @@ public class GamestateHandler {
     }
 
     public void movePlayer(int dx, int dy){
-        player.move(dx, dy);
+
+        Dir dir = Dir.WEST;
+        if(dx == 1) dir = Dir.EAST;
+        if(dx == -1) dir = Dir.WEST;
+        if(dy == 1) dir = Dir.SOUTH;
+        if(dy == -1) dir = Dir.NORTH;
+
+        if(currentMaze.canMove(player.getPos(), dir))
+            player.move(dx, dy);
     }
 
     public Player getPlayer() {
