@@ -24,15 +24,15 @@ public class ImageLoader {
         }
 
         for (int i = 0; i < 6; i++) {
-            sprites.put("player_walk_left_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "player", "spr_player_down.png"))).getSubimage(i * 14,0,14,21));
+            sprites.put("player_walk_left_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "player", "spr_player_left.png"))).getSubimage(i * 14,0,14,21));
         }
 
         for (int i = 0; i < 6; i++) {
-            sprites.put("player_walk_right_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "player", "spr_player_down.png"))).getSubimage(i * 14,0,14,21));
+            sprites.put("player_walk_right_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "player", "spr_player_right.png"))).getSubimage(i * 14,0,14,21));
         }
 
         for (int i = 0; i < 6; i++) {
-            sprites.put("player_walk_up_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "player", "spr_player_down.png"))).getSubimage(i * 14,0,14,21));
+            sprites.put("player_walk_up_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "player", "spr_player_up.png"))).getSubimage(i * 14,0,14,21));
         }
 
         for (int i = 0; i < 7; i++) {
