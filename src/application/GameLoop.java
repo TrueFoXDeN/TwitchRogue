@@ -7,7 +7,6 @@ public class GameLoop extends Thread {
 
     // handles the state of the game
     public static final GamestateHandler gHandler = new GamestateHandler();
-    double delta = 0;
 
     @Override
     public void run() {
@@ -40,7 +39,7 @@ public class GameLoop extends Thread {
 
     }
 
-    private void update(double data) {
+    private void update(double delta) {
         gHandler.update(delta);
     }
 

@@ -2,6 +2,7 @@ package game.arena;
 
 import drawing.Drawable;
 import game.engine.Entity;
+import geometry.Vector2f;
 import io.ImageLoader;
 
 import java.awt.*;
@@ -54,18 +55,18 @@ public class Maze implements Drawable {
 
 
         generateMaze();
-        updateVision(new Point(0, 0));
+        updateVision(new Vector2f(0, 0));
     }
 
-    public void updateVision(Point2D playerPos) {
-        int x = (int) playerPos.getX();
-        int y = (int) playerPos.getY();
+    public void updateVision(Vector2f playerPos) {
+        int x = (int) playerPos.x;
+        int y = (int) playerPos.y;
 
-        var revealNeighbor = new Function<Point2D, Void>() {
+        var revealNeighbor = new Function<Vector2f, Void>() {
             @Override
-            public Void apply(Point2D point2D) {
-                int x = (int) point2D.getX();
-                int y = (int) point2D.getY();
+            public Void apply(Vector2f point2D) {
+                int x = (int) point2D.x;
+                int y = (int) point2D.y;
 
                 if (x > 0 && !cells[x + y * size].borders[Cell.W])
                     cells[x - 1 + y * size].halfVisible = true;
@@ -94,7 +95,7 @@ public class Maze implements Drawable {
         do {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
-            revealNeighbor.apply(new Point(tempX, tempY));
+            revealNeighbor.apply(new Vector2f(tempX, tempY));
             if (nextCell.borders[Cell.E]) break;
         } while (tempX++ < size - 1);
 
@@ -105,7 +106,7 @@ public class Maze implements Drawable {
         do {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
-            revealNeighbor.apply(new Point(tempX, tempY));
+            revealNeighbor.apply(new Vector2f(tempX, tempY));
             if (nextCell.borders[Cell.W]) break;
         } while (tempX-- > 0);
 
@@ -116,7 +117,7 @@ public class Maze implements Drawable {
         do {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
-            revealNeighbor.apply(new Point(tempX, tempY));
+            revealNeighbor.apply(new Vector2f(tempX, tempY));
             if (nextCell.borders[Cell.N]) break;
         } while (tempY-- > 0);
 
@@ -127,7 +128,7 @@ public class Maze implements Drawable {
         do {
             Cell nextCell = cells[tempX + tempY * size];
             nextCell.discovered = true;
-            revealNeighbor.apply(new Point(tempX, tempY));
+            revealNeighbor.apply(new Vector2f(tempX, tempY));
             if (nextCell.borders[Cell.S]) break;
         } while (tempY++ < size - 1);
     }
