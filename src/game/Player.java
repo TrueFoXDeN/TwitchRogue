@@ -33,7 +33,24 @@ public class Player implements Entity, Drawable {
             }
         }
 
-        animator = new Animator(12.5, sprites, state -> (state == 0) ? 5 : 0);
+        animator = new Animator(12.5, sprites, state -> {
+            switch (direction) {
+                case NORTH: {
+                    return ++state % 6;
+                }
+                case EAST: {
+                    return ++state % 6 + 6;
+                }
+                case SOUTH: {
+                    return ++state % 6 + 12;
+                }
+                case WEST: {
+                    return ++state % 6 + 18;
+                }
+                default:
+                    return 0;
+            }
+        });
     }
 
     @Override
