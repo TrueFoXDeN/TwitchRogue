@@ -10,9 +10,6 @@ public class GameLoop extends Thread {
 
     @Override
     public void run() {
-
-        init();
-
         long lastLoopTime = System.nanoTime();
         final int TARGET_FPS = 60;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
@@ -41,10 +38,6 @@ public class GameLoop extends Thread {
 
     private void update(double delta) {
         gHandler.update(delta);
-    }
-
-    private void init() {
-        ImageLoader.load();
     }
 
     public void stopThread() {

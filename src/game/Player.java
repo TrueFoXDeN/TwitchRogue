@@ -28,14 +28,12 @@ public class Player implements Entity, Drawable {
         String spriteNames[] = {"player_walk_up_", "player_walk_right_", "player_walk_down_", "player_walk_left_"};
         List<BufferedImage> sprites = new ArrayList<>();
         for(String s: spriteNames) {
-            for(int i = 0; i <= 6; ++i) {
+            for(int i = 0; i < 6; i++) {
                 sprites.add(ImageLoader.sprites.get(s + i));
             }
         }
 
-        animator = new Animator(12.5, sprites, state -> {
-            return (state == 0) ? 1 : 0;
-        });
+        animator = new Animator(12.5, sprites, state -> (state == 0) ? 5 : 0);
     }
 
     @Override
