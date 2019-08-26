@@ -22,6 +22,7 @@ public class GamestateHandler {
     // player entity is handled separately
     private final Player player = new Player();
 
+
     public static TwitchConnection twitchConnection;
 
     public GamestateHandler() {
