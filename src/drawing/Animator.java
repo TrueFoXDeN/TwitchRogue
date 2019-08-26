@@ -32,6 +32,10 @@ public class Animator {
         return sprites.get(state);
     }
 
+    public void flush() {
+        currTime = 0;
+    }
+
     @FunctionalInterface
     public interface Rule {
         int advance(int state);

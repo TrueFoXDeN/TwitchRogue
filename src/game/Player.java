@@ -80,14 +80,16 @@ public class Player implements Entity, Drawable {
 
 
     public void move(int dx, int dy) {
-        if(pos.equals(nextPos))
-            nextPos.add(new Vector2f(dx ,dy));
+        if(pos.equals(nextPos)) {
+            animator.flush();
+            nextPos.add(new Vector2f(dx, dy));
 
-        if(dx > 0) direction = Dir.EAST;
-        else if(dx < 0) direction = Dir.WEST;
+            if (dx > 0) direction = Dir.EAST;
+            else if (dx < 0) direction = Dir.WEST;
 
-        if(dy > 0) direction = Dir.SOUTH;
-        else if(dy < 0) direction = Dir.NORTH;
+            if (dy > 0) direction = Dir.SOUTH;
+            else if (dy < 0) direction = Dir.NORTH;
+        }
     }
 
     public Vector2f getPos() {
