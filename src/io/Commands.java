@@ -6,13 +6,13 @@ import java.util.List;
 public class Commands {
 
     public final static Commands commands[] = {
-            new Commands("moveup", _ -> {System.out.println("Hello World");})
+            new Commands("moveup", () -> {System.out.println("Hello World");})
     };
 
     private String mnenomic;
     private Command command;
 
-    private Commands(String mnenomic, Commands command) {
+    private Commands(String mnenomic, Command command) {
         this.mnenomic = mnenomic;
     }
 
@@ -24,7 +24,8 @@ public class Commands {
         return mnenomic.equalsIgnoreCase(cmd);
     }
 
+    @FunctionalInterface
     public interface Command {
-        abstract void fire();
+        void fire();
     }
 }
