@@ -44,7 +44,7 @@ public class Display extends Canvas implements Runnable {
         contentPane.add(this);
         window.pack();
         window.setLocationRelativeTo(null);
-        window.addKeyListener(new KeyHandler());
+        this.addKeyListener(new KeyHandler());
         window.requestFocus();
 
         JMenuBar menuBar = new JMenuBar();
