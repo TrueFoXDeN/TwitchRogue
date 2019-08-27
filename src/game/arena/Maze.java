@@ -1,5 +1,6 @@
 package game.arena;
 
+import application.Main;
 import drawing.Drawable;
 import game.Dir;
 import game.engine.Entity;
@@ -65,7 +66,7 @@ public class Maze implements Drawable {
     }
 
     public boolean canMove(Vector2f playerPos, Dir dir) {
-        return !cells[playerPos.to1DIndex(width)].borders[dir.id];
+        return true;// !cells[playerPos.to1DIndex(width)].borders[dir.id];
     }
 
     public void updateVision(Vector2f playerPos) {
@@ -223,23 +224,27 @@ public class Maze implements Drawable {
         List<Item> items = new ArrayList<>(MAX_ITEMS);
         Random rand = new Random();
 
-        int x = rand.nextInt(width - 2) + 1;
-        int y = rand.nextInt(height - 2) + 1;
+        double x = rand.nextInt(width - 2) + 1;
+        double y = rand.nextInt(height - 2) + 1;
 
         items.add(new Torch(x, y));
 
-        for (int i = 0; i < MAX_ENEMIES - 1; ++i) {
-            Potion newPotion = new Potion(rand.nextInt(width - 2) + 1, rand.nextInt(height - 2) + 1);
+        for (int i = 0; i < MAX_ITEMS - 1; ++i) {
+            x = rand.nextInt(width - 2) + 1;
+            y = rand.nextInt(height - 2) + 1;
 
-            while (items
-                    .stream()
-                    .anyMatch(item -> item.getPos().x == newPotion.getPos().x
-                            || item.getPos().y == newPotion.getPos().y)) {
-                newPotion.getPos().x = rand.nextInt(width - 2) + 1;
-                newPotion.getPos().y = rand.nextInt(height - 2) + 1;
+            innerLoop:
+            while (true) {
+                for (Item item : items) {
+                    if (item.getPos().x != x && item.getPos().y != y)
+                        break innerLoop;
+                }
+
+                x = rand.nextInt(width - 2) + 1;
+                y = rand.nextInt(height - 2) + 1;
             }
 
-            items.add(newPotion);
+            items.add(new Potion(x, y));
         }
 
         entities.addAll(items);
@@ -312,6 +317,11 @@ public class Maze implements Drawable {
             }
         }
 
+        entities.forEach(e -> {
+            if (cells[e.getPos().to1DIndex(width)].discovered) {
+                e.draw(g);
+            }
+        });
     }
 
     private class Cell {

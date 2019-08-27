@@ -13,12 +13,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player implements Entity, Drawable {
+public class Player extends Entity {
 
     public int level = 1, currentXP = 0, xpNeeded = 20, currentHP = 10, maxHP = 10;
     public int strength = 2, defense = 2;
     // position on the map
-    private Vector2f pos = new Vector2f(0, 0);
     private Vector2f nextPos = new Vector2f(0, 0);
     private Dir direction = Dir.SOUTH;
 
@@ -80,7 +79,7 @@ public class Player implements Entity, Drawable {
                 (int) ((pos.y) * Maze.CELL_SIZE), (int) (Maze.CELL_SIZE / 1.5), (int) ((Maze.CELL_SIZE / 1.5) * 1.5), null);
     }
 
-    @Override
+
     public void update(double delta) {
 
         animator.update(delta);
