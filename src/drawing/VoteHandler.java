@@ -88,9 +88,9 @@ public class VoteHandler implements Drawable {
         g.drawString(options[3], 1100, 290);
 
         g.drawString("" + dirVoting[0], 1225, 200);
-        g.drawString("" + dirVoting[2], 1225, 230);
-        g.drawString("" + dirVoting[3], 1225, 260);
-        g.drawString("" + dirVoting[1], 1225, 290);
+        g.drawString("" + dirVoting[1], 1225, 230);
+        g.drawString("" + dirVoting[2], 1225, 260);
+        g.drawString("" + dirVoting[3], 1225, 290);
 
         g.drawImage(ImageLoader.sprites.get(pictures[0]), 1150, 10, 50, 50, null);
         g.drawImage(ImageLoader.sprites.get(pictures[1]), 1210, 65, 50, 50, null);
