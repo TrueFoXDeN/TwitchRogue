@@ -236,7 +236,7 @@ public class Maze implements Drawable {
             innerLoop:
             while (true) {
                 for (Item item : items) {
-                    if (item.getPos().x != x && item.getPos().y != y)
+                    if (!item.getPos().equals(new Vector2f(x, y)))
                         break innerLoop;
                 }
 
