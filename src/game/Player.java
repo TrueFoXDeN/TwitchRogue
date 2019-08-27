@@ -33,15 +33,12 @@ public class Player extends Entity {
             }
         }
 
-        String shadowNames[] = {"player_walk_up_", "player_walk_right_", "player_walk_down_", "player_walk_left_"};
         List<BufferedImage> shadowSprites = new ArrayList<>();
-        for (String s : shadowNames) {
-            for (int i = 0; i < 6; i++) {
-                shadowSprites.add(ImageLoader.sprites.get(s + i));
-            }
+        for (int i = 0; i < 6; i++) {
+            shadowSprites.add(ImageLoader.sprites.get("player_shadow_" + i));
         }
 
-        Animator.Rule rule = state -> {
+        spriteAnimator = new Animator(0, 4, sprites, state -> {
             if (pos.equals(nextPos)) {
                 switch (direction) {
                     case NORTH: {
@@ -77,14 +74,16 @@ public class Player extends Entity {
                         return 0;
                 }
             }
-        };
+        });
 
-        spriteAnimator = new Animator(13, 4, sprites, rule);
-        shadowAnimator = new Animator(13, 4, shadowSprites, rule);
+        shadowAnimator = new Animator(0, 4, shadowSprites,
+                state -> pos.equals(nextPos) ? 0 : ++state % 6);
     }
 
     @Override
     public void draw(Graphics g) {
+        g.drawImage(shadowAnimator.getSprite(), (int) ((pos.x + 0.2) * Maze.CELL_SIZE),
+                (int) ((pos.y) * Maze.CELL_SIZE), (int) (Maze.CELL_SIZE / 1.5), (int) ((Maze.CELL_SIZE / 1.5) * 1.5), null);
         g.drawImage(spriteAnimator.getSprite(), (int) ((pos.x + 0.2) * Maze.CELL_SIZE),
                 (int) ((pos.y) * Maze.CELL_SIZE), (int) (Maze.CELL_SIZE / 1.5), (int) ((Maze.CELL_SIZE / 1.5) * 1.5), null);
     }
@@ -93,6 +92,8 @@ public class Player extends Entity {
     public void update(double delta) {
 
         spriteAnimator.update(delta);
+        shadowAnimator.update(delta);
+
         if (Math.abs(nextPos.x - pos.x) > 0.05) {
             pos.x += Math.signum(nextPos.x - pos.x) * vel * delta;
         }
@@ -111,6 +112,7 @@ public class Player extends Entity {
     public void move(int dx, int dy) {
         if (pos.equals(nextPos)) {
             spriteAnimator.flush();
+            shadowAnimator.flush();
             nextPos.add(new Vector2f(dx, dy));
 
             if (dx > 0) direction = Dir.EAST;
@@ -125,23 +127,23 @@ public class Player extends Entity {
         return pos;
     }
 
-    public void addXP(int dXP){
+    public void addXP(int dXP) {
         currentXP += dXP;
         levelup();
     }
 
-    private void levelup(){
+    private void levelup() {
         int possibleoverhead = currentXP - xpNeeded;
-        if(currentXP >= xpNeeded){
+        if (currentXP >= xpNeeded) {
             level++;
             currentXP = Math.max(possibleoverhead, 0);
 
-            strength ++;
-            defense ++;
+            strength++;
+            defense++;
             maxHP += 5;
             currentHP = maxHP;
 
-            xpNeeded = (int)(xpNeeded * 1.5);
+            xpNeeded = (int) (xpNeeded * 1.5);
         }
     }
 }

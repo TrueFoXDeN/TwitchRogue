@@ -38,14 +38,8 @@ public class ImageLoader {
         }
 
         for (int i = 0; i < 6; i++) {
-            sprites.put("player_shadow_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "player", "spr_shadow.png"))).getSubimage(i * 14,0,14,21));
+            sprites.put("player_shadow_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "player", "spr_player_shadow.png"))).getSubimage(i * 14,0,14,21));
         }
-
-        sprites.put("player_idle_down", sprites.get("player_walk_down_0"));
-        sprites.put("player_idle_left", sprites.get("player_walk_left_0"));
-        sprites.put("player_idle_right", sprites.get("player_walk_right_0"));
-        sprites.put("player_idle_up", sprites.get("player_walk_up_0"));
-        sprites.put("player_shadow_idle", sprites.get("player_shadow_0"));
 
         for (int i = 0; i < 4; i++) {
             sprites.put("arrow_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "ui", "arrow_"+i+".png"))));
