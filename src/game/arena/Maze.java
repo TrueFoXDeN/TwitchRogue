@@ -219,7 +219,7 @@ public class Maze implements Drawable {
         }
     }
 
-    public void addItems() {
+    private void addItems() {
         List<Item> items = new ArrayList<>(MAX_ITEMS);
         Random rand = new Random();
 

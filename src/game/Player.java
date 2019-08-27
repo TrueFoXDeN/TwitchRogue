@@ -124,12 +124,8 @@ public class Player implements Entity, Drawable {
     public void levelup(){
         int possibleoverhead = currentXP - xpNeeded;
         if(currentXP >= xpNeeded){
-            level ++;
-            if(possibleoverhead > 0){
-                currentXP = possibleoverhead;
-            }else{
-                currentXP = 0;
-            }
+            level++;
+            currentXP = Math.max(possibleoverhead, 0);
 
             strength ++;
             defense ++;
