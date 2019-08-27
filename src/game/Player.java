@@ -41,37 +41,19 @@ public class Player extends Entity {
         spriteAnimator = new Animator(0, 4, sprites, state -> {
             if (pos.equals(nextPos)) {
                 switch (direction) {
-                    case NORTH: {
-                        return 0;
-                    }
-                    case EAST: {
-                        return 6;
-                    }
-                    case SOUTH: {
-                        return 12;
-                    }
-                    case WEST: {
-                        return 18;
-                    }
-                    default:
-                        return 0;
+                    case NORTH: return 0;
+                    case EAST: return 6;
+                    case SOUTH: return 12;
+                    case WEST: return 18;
+                    default: return 0;
                 }
             } else {
                 switch (direction) {
-                    case NORTH: {
-                        return ++state % 6;
-                    }
-                    case EAST: {
-                        return ++state % 6 + 6;
-                    }
-                    case SOUTH: {
-                        return ++state % 6 + 12;
-                    }
-                    case WEST: {
-                        return ++state % 6 + 18;
-                    }
-                    default:
-                        return 0;
+                    case NORTH: return ++state % 6;
+                    case EAST: return ++state % 6 + 6;
+                    case SOUTH: return ++state % 6 + 12;
+                    case WEST: return ++state % 6 + 18;
+                    default: return 0;
                 }
             }
         });
