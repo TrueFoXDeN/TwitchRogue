@@ -3,6 +3,9 @@ package game.arena;
 import drawing.Drawable;
 import game.Dir;
 import game.engine.Entity;
+import game.items.Item;
+import game.items.Potion;
+import game.items.Torch;
 import geometry.Vector2f;
 import io.ImageLoader;
 
@@ -16,6 +19,7 @@ import java.util.stream.Collectors;
 public class Maze implements Drawable {
     private int width, height;
     private final int MAX_ENEMIES;
+    private final int MAX_ITEMS = 5;
 
     // size in which the cells should be drawn
     public static int CELL_SIZE = 0;
@@ -56,6 +60,7 @@ public class Maze implements Drawable {
 
 
         generateMaze();
+        addItems();
         updateVision(new Vector2f(0, 0));
     }
 
@@ -212,6 +217,32 @@ public class Maze implements Drawable {
                 current = stack.pollFirst();
             }
         }
+    }
+
+    public void addItems() {
+        List<Item> items = new ArrayList<>(MAX_ITEMS);
+        Random rand = new Random();
+
+        int x = rand.nextInt(width - 2) + 1;
+        int y = rand.nextInt(height - 2) + 1;
+
+        items.add(new Torch(x, y));
+
+        for (int i = 0; i < MAX_ENEMIES - 1; ++i) {
+            Potion newPotion = new Potion(rand.nextInt(width - 2) + 1, rand.nextInt(height - 2) + 1);
+
+            while (items
+                    .stream()
+                    .anyMatch(item -> item.getPos().x == newPotion.getPos().x
+                            || item.getPos().y == newPotion.getPos().y)) {
+                newPotion.getPos().x = rand.nextInt(width - 2) + 1;
+                newPotion.getPos().y = rand.nextInt(height - 2) + 1;
+            }
+
+            items.add(newPotion);
+        }
+
+        entities.addAll(items);
     }
 
     @Override
