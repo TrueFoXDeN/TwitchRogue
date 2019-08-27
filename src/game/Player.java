@@ -15,6 +15,8 @@ import java.util.List;
 
 public class Player implements Entity, Drawable {
 
+    public int level = 1, currentXP = 0, xpNeeded = 20, currentHP = 10, maxHP = 10;
+    public int strength = 2, defense = 2;
     // position on the map
     private Vector2f pos = new Vector2f(0, 0);
     private Vector2f nextPos = new Vector2f(0, 0);
@@ -112,5 +114,29 @@ public class Player implements Entity, Drawable {
 
     public Vector2f getPos() {
         return pos;
+    }
+
+    public void addXP(int dXP){
+        currentXP += dXP;
+        levelup();
+    }
+
+    public void levelup(){
+        int possibleoverhead = currentXP - xpNeeded;
+        if(currentXP >= xpNeeded){
+            level ++;
+            if(possibleoverhead > 0){
+                currentXP = possibleoverhead;
+            }else{
+                currentXP = 0;
+            }
+
+            strength ++;
+            defense ++;
+            maxHP += 5;
+            currentHP = maxHP;
+
+            xpNeeded = (int)(xpNeeded * 1.5);
+        }
     }
 }
