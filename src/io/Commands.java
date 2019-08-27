@@ -21,8 +21,12 @@ public class Commands {
         command.fire();
     }
 
-    public boolean match(String cmd) {
+    private boolean match(String cmd) {
         return mnemonic.equalsIgnoreCase(cmd);
+    }
+
+    public static Commands checkCommand(String cmd) {
+        return null;
     }
 
     @FunctionalInterface

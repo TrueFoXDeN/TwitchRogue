@@ -1,12 +1,16 @@
 package drawing;
 
-import game.engine.GameState;
 import game.engine.GamestateHandler;
+import io.Commands;
 import io.ImageLoader;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class VoteHandler implements Drawable {
+import static game.engine.GamestateHandler.twitchConnection;
+
+public class VoteHandler implements Drawable, Runnable {
 
     public static int[] dirVoting = new int[4];
     public int leadingDir = 0;
@@ -15,9 +19,16 @@ public class VoteHandler implements Drawable {
     private String[] pictures = new String[4];
     private String[] picturesActive = new String[4];
 
+    private Map<String, Commands> votes = new HashMap<>();
+    private Thread voteThread = new Thread(this);
+
     public VoteHandler() {
         dirVoting[0] = 1;
         update();
+
+        voteThread.setName("voteThread-1");
+        voteThread.setDaemon(true);
+        voteThread.start();
     }
 
     public static void resetVoting() {
@@ -114,5 +125,28 @@ public class VoteHandler implements Drawable {
             }
         }
 
+    }
+
+    @Override
+    public void run() {
+        while(!voteThread.isInterrupted()) {
+            if(twitchConnection != null) {
+                try {
+                    String data = twitchConnection.getMessages().take();
+                    int begin = data.indexOf(":") + 1;
+                    int end = data.indexOf("!");
+
+                    String name = data.substring(begin, end);
+                    String dataParts[] = data.split(" ");
+                    String msg = dataParts[dataParts.length - 1];
+
+                    Commands cmd = Commands.checkCommand(msg);
+                    if(cmd != null) votes.put(name, cmd);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
