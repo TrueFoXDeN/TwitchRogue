@@ -54,6 +54,9 @@ public class ImageLoader {
             sprites.put("action_active_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "ui", "action_active_"+i+".png"))));
         }
 
+        sprites.put("fackel", ImageIO.read(Files.newInputStream(Paths.get("res", "items", "spr_fackel.png"))));
+        sprites.put("potion", ImageIO.read(Files.newInputStream(Paths.get("res", "items", "spr_potion.png"))));
+
     }
 
     public static void load() {
