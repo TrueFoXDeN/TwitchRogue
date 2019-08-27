@@ -1,7 +1,6 @@
 package game;
 
 import drawing.Animator;
-import drawing.Drawable;
 import game.arena.Maze;
 import game.engine.Entity;
 import game.engine.GamestateHandler;
@@ -23,7 +22,7 @@ public class Player extends Entity {
 
     private final double vel = 0.05;
 
-    private final Animator animator;
+    private final Animator spriteAnimator, shadowAnimator;
 
     public Player() {
         String spriteNames[] = {"player_walk_up_", "player_walk_right_", "player_walk_down_", "player_walk_left_"};
@@ -34,7 +33,15 @@ public class Player extends Entity {
             }
         }
 
-        animator = new Animator(13, 4, sprites, state -> {
+        String shadowNames[] = {"player_walk_up_", "player_walk_right_", "player_walk_down_", "player_walk_left_"};
+        List<BufferedImage> shadowSprites = new ArrayList<>();
+        for (String s : shadowNames) {
+            for (int i = 0; i < 6; i++) {
+                shadowSprites.add(ImageLoader.sprites.get(s + i));
+            }
+        }
+
+        Animator.Rule rule = state -> {
             if (pos.equals(nextPos)) {
                 switch (direction) {
                     case NORTH: {
@@ -70,19 +77,22 @@ public class Player extends Entity {
                         return 0;
                 }
             }
-        });
+        };
+
+        spriteAnimator = new Animator(13, 4, sprites, rule);
+        shadowAnimator = new Animator(13, 4, shadowSprites, rule);
     }
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(animator.getSprite(), (int) ((pos.x + 0.2) * Maze.CELL_SIZE),
+        g.drawImage(spriteAnimator.getSprite(), (int) ((pos.x + 0.2) * Maze.CELL_SIZE),
                 (int) ((pos.y) * Maze.CELL_SIZE), (int) (Maze.CELL_SIZE / 1.5), (int) ((Maze.CELL_SIZE / 1.5) * 1.5), null);
     }
 
 
     public void update(double delta) {
 
-        animator.update(delta);
+        spriteAnimator.update(delta);
         if (Math.abs(nextPos.x - pos.x) > 0.05) {
             pos.x += Math.signum(nextPos.x - pos.x) * vel * delta;
         }
@@ -100,7 +110,7 @@ public class Player extends Entity {
 
     public void move(int dx, int dy) {
         if (pos.equals(nextPos)) {
-            animator.flush();
+            spriteAnimator.flush();
             nextPos.add(new Vector2f(dx, dy));
 
             if (dx > 0) direction = Dir.EAST;

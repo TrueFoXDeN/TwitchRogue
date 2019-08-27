@@ -24,8 +24,6 @@ public class GamestateHandler {
     // player entity is handled separately
     private final Player player = new Player();
 
-
-
     public static VoteHandler voteHandler = new VoteHandler();
 
     public static TwitchConnection twitchConnection;
@@ -94,15 +92,15 @@ public class GamestateHandler {
 
     }
 
-    public void movePlayer(int dx, int dy){
+    public void movePlayer(int dx, int dy) {
 
         Dir dir = Dir.WEST;
-        if(dx == 1) dir = Dir.EAST;
-        if(dx == -1) dir = Dir.WEST;
-        if(dy == 1) dir = Dir.SOUTH;
-        if(dy == -1) dir = Dir.NORTH;
+        if (dx == 1) dir = Dir.EAST;
+        if (dx == -1) dir = Dir.WEST;
+        if (dy == 1) dir = Dir.SOUTH;
+        if (dy == -1) dir = Dir.NORTH;
 
-        if(currentMaze.canMove(player.getPos(), dir))
+        if (currentMaze.canMove(player.getPos(), dir))
             player.move(dx, dy);
     }
 
