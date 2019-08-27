@@ -19,8 +19,8 @@ public class Torch extends Item {
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(ImageLoader.sprites.get("fackel"), (int) pos.x * Maze.CELL_SIZE, (int) pos.y * Maze.CELL_SIZE,
-                Maze.CELL_SIZE, Maze.CELL_SIZE, null);
+        g.drawImage(ImageLoader.sprites.get("fackel"),  (int) ((pos.x +0.35) * Maze.CELL_SIZE), (int) ((pos.y+0.25) * Maze.CELL_SIZE),
+                (int) ((Maze.CELL_SIZE / 1.8)* 0.5) , (int) ((Maze.CELL_SIZE )* 0.6), null);
     }
 
     @Override

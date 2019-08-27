@@ -120,7 +120,7 @@ public class Player extends Entity {
         levelup();
     }
 
-    public void levelup(){
+    private void levelup(){
         int possibleoverhead = currentXP - xpNeeded;
         if(currentXP >= xpNeeded){
             level++;

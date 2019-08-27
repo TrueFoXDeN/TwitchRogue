@@ -21,8 +21,8 @@ public class Potion extends Item {
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(ImageLoader.sprites.get("potion"), (int) pos.x * Maze.CELL_SIZE, (int) pos.y * Maze.CELL_SIZE,
-                Maze.CELL_SIZE, Maze.CELL_SIZE, null);
+        g.drawImage(ImageLoader.sprites.get("potion"), (int) ((pos.x +0.35) * Maze.CELL_SIZE), (int) ((pos.y+0.25) * Maze.CELL_SIZE),
+                (int) ((Maze.CELL_SIZE / 1.28)* 0.5) , (int) (((Maze.CELL_SIZE / 1.28) * 1.28) * 0.5), null);
     }
 
     @Override
