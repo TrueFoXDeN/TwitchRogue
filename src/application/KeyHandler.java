@@ -2,6 +2,7 @@ package application;
 
 import drawing.VoteHandler;
 import game.Player;
+import game.engine.GameState;
 import game.engine.GamestateHandler;
 
 import java.awt.event.KeyEvent;
@@ -41,6 +42,17 @@ public class KeyHandler implements KeyListener {
         }else if(e.getKeyCode() == KeyEvent.VK_A){
             VoteHandler.dirVoting[3] ++;
             GamestateHandler.voteHandler.update();
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_SPACE){
+            if(GamestateHandler.gameState == GameState.EXPLORE){
+                GamestateHandler.gameState = GameState.BATTLE;
+            }else{
+                GamestateHandler.gameState = GameState.EXPLORE;
+            }
+
+            VoteHandler.resetVoting();
+
         }
     }
 

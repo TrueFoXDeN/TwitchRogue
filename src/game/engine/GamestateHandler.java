@@ -14,7 +14,7 @@ public class GamestateHandler {
 
     // current state of the game
     // TODO: change back to start in menu state
-    private GameState gameState = GameState.EXPLORE;
+    public static GameState gameState = GameState.EXPLORE;
 
     public static Maze currentMaze = new Maze(15, 10, 0);
 
