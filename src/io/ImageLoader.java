@@ -38,7 +38,7 @@ public class ImageLoader {
         }
 
         for (int i = 0; i < 6; i++) {
-            sprites.put("player_shadow_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "player", "spr_shadow.png"))).getSubimage(i * 14,0,14,21));
+            sprites.put("player_shadow_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "player", "spr_player_shadow.png"))).getSubimage(i * 14,0,14,21));
         }
 
         sprites.put("player_idle_down", sprites.get("player_walk_down_0"));
