@@ -25,7 +25,6 @@ public class GamestateHandler {
     private final Player player = new Player();
 
     public static VoteHandler voteHandler = new VoteHandler();
-
     public static TwitchConnection twitchConnection;
 
     public GamestateHandler() {

@@ -3,10 +3,21 @@ package io;
 import java.util.ArrayList;
 import java.util.List;
 
+import static application.GameLoop.gHandler;
+
 public class Commands {
 
     public final static Commands commands[] = {
-            new Commands("moveup", () -> {System.out.println("Hello World");})
+            new Commands("moveup", () -> gHandler.movePlayer(0, -1)),
+            new Commands("movedown", () -> gHandler.movePlayer(0, 1)),
+            new Commands("moveRight", () -> gHandler.movePlayer(1, 0)),
+            new Commands("moveLeft", () -> gHandler.movePlayer(-1, 0)),
+            new Commands("usePotion", () -> {
+                if(gHandler.getPlayer().getPotions().size() > 0) {
+                    gHandler.getPlayer().getPotions().get(0).use();
+                    gHandler.getPlayer().getPotions().remove(0);
+                }
+            })
     };
 
     private String mnemonic;
@@ -17,7 +28,10 @@ public class Commands {
         this.command = command;
     }
 
-    public void fire() {
+    public void fire()
+    {
+        // TODO: remove debug logging
+        System.out.println(String.format("Command %s was executed", mnemonic));
         command.fire();
     }
 

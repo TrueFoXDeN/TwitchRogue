@@ -4,6 +4,7 @@ import drawing.Animator;
 import game.arena.Maze;
 import game.engine.Entity;
 import game.engine.GamestateHandler;
+import game.items.Potion;
 import geometry.Vector2f;
 import io.ImageLoader;
 
@@ -11,11 +12,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Player extends Entity {
 
-    public int level = 1, currentXP = 0, xpNeeded = 20, currentHP = 10, maxHP = 10;
+    public int level = 1, currentHP = 10, maxHP = 10;
     public int strength = 2, defense = 2;
+
+    private int currentXP = 0, xpNeeded = 20;
+
+    private List<Potion> potions = new CopyOnWriteArrayList<>();
+
     // position on the map
     private Vector2f nextPos = new Vector2f(0, 0);
     private Dir direction = Dir.SOUTH;
@@ -107,6 +114,10 @@ public class Player extends Entity {
 
     public Vector2f getPos() {
         return pos;
+    }
+
+    public List<Potion> getPotions() {
+        return potions;
     }
 
     public void addXP(int dXP) {
