@@ -1,6 +1,7 @@
 package application;
 
 import drawing.Display;
+import game.algorithms.OpenSimplexNoise;
 import io.ImageLoader;
 
 public class Main {
