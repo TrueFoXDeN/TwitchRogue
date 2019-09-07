@@ -1,5 +1,6 @@
 package drawing;
 
+import application.GameLoop;
 import game.engine.GamestateHandler;
 import io.Commands;
 import io.ImageLoader;
@@ -12,12 +13,12 @@ import static game.engine.GamestateHandler.twitchConnection;
 
 public class VoteHandler implements Drawable, Runnable {
 
-    public static int[] dirVoting = new int[4];
+    public static int[] dirVoting = new int[5];
     public int leadingDir = 0;
 
-    private String[] options = new String[4];
-    private String[] pictures = new String[4];
-    private String[] picturesActive = new String[4];
+    private String[] options = new String[5];
+    private String[] pictures = new String[5];
+    private String[] picturesActive = new String[5];
 
     private Map<String, Commands> votes = new HashMap<>();
     private Thread voteThread = new Thread(this);
@@ -71,6 +72,7 @@ public class VoteHandler implements Drawable, Runnable {
                 options[1] = "RIGHT: ";
                 options[2] = "DOWN: ";
                 options[3] = "LEFT: ";
+                options[4] = "Potion: ";
 
                 for (int i = 0; i < pictures.length; i++) {
                     pictures[i] = "arrow_" + i;
@@ -97,16 +99,19 @@ public class VoteHandler implements Drawable, Runnable {
         g.drawString(options[1], 1100, 230);
         g.drawString(options[2], 1100, 260);
         g.drawString(options[3], 1100, 290);
+        g.drawString(options[4], 1100, 320);
 
         g.drawString("" + dirVoting[0], 1225, 200);
         g.drawString("" + dirVoting[1], 1225, 230);
         g.drawString("" + dirVoting[2], 1225, 260);
         g.drawString("" + dirVoting[3], 1225, 290);
+        g.drawString("" + dirVoting[4], 1225, 320);
 
         g.drawImage(ImageLoader.sprites.get(pictures[0]), 1150, 10, 50, 50, null);
         g.drawImage(ImageLoader.sprites.get(pictures[1]), 1210, 65, 50, 50, null);
         g.drawImage(ImageLoader.sprites.get(pictures[2]), 1150, 120, 50, 50, null);
         g.drawImage(ImageLoader.sprites.get(pictures[3]), 1090, 65, 50, 50, null);
+        g.drawImage(ImageLoader.sprites.get(pictures[4]), 1150, 65, 50, 50, null);
 
         if (!isNull()) {
             switch (leadingDir) {
@@ -122,8 +127,19 @@ public class VoteHandler implements Drawable, Runnable {
                 case 3:
                     g.drawImage(ImageLoader.sprites.get(picturesActive[3]), 1090, 65, 50, 50, null);
                     break;
+                case 4:
+                    g.drawImage(ImageLoader.sprites.get(picturesActive[4]), 1150, 65, 50, 50, null);
+                    break;
             }
         }
+
+        g.drawImage(ImageLoader.sprites.get("potion"), 1100, 350,35,45, null);
+        g.drawString(":", 1140,380);
+        g.drawString(GameLoop.gHandler.getPlayer().getPotions().size()+"", 1160, 382);
+        if(GameLoop.gHandler.getPlayer().useTorch){
+            g.drawImage(ImageLoader.sprites.get("fackel"), 1100, 420,25,70, null);
+        }
+
 
     }
 

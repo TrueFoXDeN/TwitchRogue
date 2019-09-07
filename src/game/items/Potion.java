@@ -21,7 +21,7 @@ public class Potion extends Item {
     @Override
     public void use() {
         Player player = gHandler.getPlayer();
-        player.currentHP = Math.max(player.currentHP + HEAL_AMOUNT, player.maxHP);
+        player.currentHP = Math.min(player.currentHP + HEAL_AMOUNT, player.maxHP);
     }
 
     @Override
