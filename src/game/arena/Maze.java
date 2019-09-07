@@ -66,7 +66,7 @@ public class Maze implements Drawable {
     }
 
     public boolean canMove(Vector2f pos, Dir dir) {
-        return true;// !cells[pos.to1DIndex(width)].borders[dir.id];
+        return !cells[pos.to1DIndex(width)].borders[dir.id];
     }
 
     public List<Entity> getEntities() {
