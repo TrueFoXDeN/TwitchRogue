@@ -174,9 +174,10 @@ public class Maze implements Drawable {
                 aroundPos[7] = new Vector2f(-1, -1);
 
                 for (int i = 0; i < aroundPos.length; i++) {
-                    if(playerPos.x > 0 && playerPos.x < width && playerPos.y > 0 && playerPos.y < height){
-                        if (!cells[playerPos.add_(aroundPos[i]).to1DIndex(width)].discovered) {
-                            cells[playerPos.add_(aroundPos[i]).to1DIndex(width)].halfVisible = true;
+                    Vector2f neighborPos = playerPos.add_(aroundPos[i]);
+                    if(neighborPos.x > 0 && neighborPos.x < width && neighborPos.y > 0 && neighborPos.y < height){
+                        if (!cells[neighborPos.to1DIndex(width)].discovered) {
+                            cells[neighborPos.to1DIndex(width)].halfVisible = true;
                         }
                     }
 
@@ -406,8 +407,8 @@ public class Maze implements Drawable {
         boolean visited = false;
         Cell neighbors[] = new Cell[4];
 
-        boolean discovered = true;
-        boolean halfVisible = true;
+        boolean discovered = false;
+        boolean halfVisible = false;
 
         public Cell(int x, int y) {
             this.x = x;
