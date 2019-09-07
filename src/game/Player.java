@@ -29,7 +29,7 @@ public class Player extends Entity {
     private Vector2f nextPos = new Vector2f(0, 0);
     private Dir direction = Dir.SOUTH;
 
-    public boolean useTorch = true;
+    public boolean useTorch = false;
 
     private final double vel = 0.05;
 
