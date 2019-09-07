@@ -28,7 +28,7 @@ public class GamestateHandler {
     public static TwitchConnection twitchConnection;
 
     public GamestateHandler() {
-        currentMaze = new Maze(15, 10, 0);
+        currentMaze = new Maze(15, 10, 5);
         entities.addAll(currentMaze.getEntities());
 
         Main.display.getDrawables().add(player);

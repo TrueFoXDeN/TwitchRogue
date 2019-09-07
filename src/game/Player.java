@@ -27,8 +27,6 @@ public class Player extends Entity {
 
     public boolean useTorch = true;
 
-    private final double vel = 0.05;
-
     private final Animator spriteAnimator, shadowAnimator;
 
     public Player() {

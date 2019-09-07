@@ -13,6 +13,7 @@ public abstract class Entity implements Drawable {
     protected Vector2f nextPos = new Vector2f(0, 0);
     protected Dir direction = Dir.SOUTH;
 
+    protected final double vel = 0.05;
 
     public Vector2f getPos() {
         return pos;
