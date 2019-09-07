@@ -11,8 +11,10 @@ public class A_Star {
     private Node nodes[];
 
     public A_Star(Maze m) {
+        this.maze = maze;
         generateGraph(m);
     }
+    private Maze maze;
 
     private void generateGraph(Maze m) {
         nodes = new Node[m.width * m.height];
@@ -35,7 +37,10 @@ public class A_Star {
         }
     }
 
-    public List<Dir> a_star(Node start, Node end) {
+    public List<Dir> a_star(Vector2f startPos, Vector2f endPos) {
+
+        Node start = nodes[startPos.to1DIndex(maze.width)], end = nodes[endPos.to1DIndex(maze.width)];
+
         PriorityQueue<Node> openList = new PriorityQueue(10, Comparator.comparingDouble((Node n) -> n.f));
         Set<Node> closeList = new HashSet<>(10);
 

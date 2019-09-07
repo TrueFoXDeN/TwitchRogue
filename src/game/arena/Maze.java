@@ -3,6 +3,7 @@ package game.arena;
 import application.Main;
 import drawing.Drawable;
 import game.Dir;
+import game.algorithms.A_Star;
 import game.engine.Entity;
 import game.items.Item;
 import game.items.Potion;
@@ -28,6 +29,8 @@ public class Maze implements Drawable {
     // items and enemies
     private final List<Entity> entities = new CopyOnWriteArrayList<>();
     private final Cell[] cells;
+
+    private A_Star a_star;
 
     public Maze(int width, int height, int MAX_ENEMIES) {
         this.width = width;
@@ -63,6 +66,7 @@ public class Maze implements Drawable {
         generateMaze();
         addItems();
         updateVision(new Vector2f(0, 0));
+        a_star = new A_Star(this);
     }
 
     public boolean canMove(Vector2f pos, Dir dir) {
@@ -71,6 +75,10 @@ public class Maze implements Drawable {
 
     public List<Entity> getEntities() {
         return entities;
+    }
+
+    public A_Star getA_star() {
+        return a_star;
     }
 
     public void updateVision(Vector2f playerPos) {
