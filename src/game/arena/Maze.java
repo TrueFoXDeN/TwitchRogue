@@ -1,5 +1,6 @@
 package game.arena;
 
+import application.GameLoop;
 import application.Main;
 import drawing.Drawable;
 import game.Dir;
@@ -154,6 +155,34 @@ public class Maze implements Drawable {
             revealNeighbor.apply(new Vector2f(tempX, tempY));
             if (nextCell.borders[Dir.SOUTH.id]) break;
         } while (tempY++ < height - 1);
+
+
+        //TORCH
+        if (GameLoop.gHandler != null && GameLoop.gHandler.getPlayer() !=null){
+            if (GameLoop.gHandler.getPlayer().useTorch) {
+
+                Vector2f aroundPos[] = new Vector2f[8];
+                aroundPos[0] = new Vector2f(0, -1);
+                aroundPos[1] = new Vector2f(1, -1);
+                aroundPos[2] = new Vector2f(1, 0);
+                aroundPos[3] = new Vector2f(1, 1);
+                aroundPos[4] = new Vector2f(0, 1);
+                aroundPos[5] = new Vector2f(-1, 1);
+                aroundPos[6] = new Vector2f(-1, 0);
+                aroundPos[7] = new Vector2f(-1, -1);
+
+                for (int i = 0; i < aroundPos.length; i++) {
+                    if(playerPos.x > 0 && playerPos.x < width && playerPos.y > 0 && playerPos.y < height){
+                        if (!cells[playerPos.add_(aroundPos[i]).to1DIndex(width)].discovered) {
+                            cells[playerPos.add_(aroundPos[i]).to1DIndex(width)].halfVisible = true;
+                        }
+                    }
+
+
+                }
+            }
+
+        }
     }
 
     private void generateMaze() {

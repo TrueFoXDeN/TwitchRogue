@@ -25,7 +25,7 @@ public class Player extends Entity {
 
     private List<Potion> potions = new CopyOnWriteArrayList<>();
 
-    public boolean useTorch = false;
+    public boolean useTorch = true;
 
     private final double vel = 0.05;
 
