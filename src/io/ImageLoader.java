@@ -54,6 +54,10 @@ public class ImageLoader {
         sprites.put("fackel", ImageIO.read(Files.newInputStream(Paths.get("res", "items", "spr_fackel.png"))));
         sprites.put("potion", ImageIO.read(Files.newInputStream(Paths.get("res", "items", "spr_potion.png"))));
 
+        for (int i = 0; i < 4; i++) {
+            sprites.put("slime_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "enemies", "spr_slime.png"))).getSubimage(i * 16,0,16,16));
+        }
+
     }
 
     public static void load() {
