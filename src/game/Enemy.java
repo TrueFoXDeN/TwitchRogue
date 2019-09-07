@@ -34,6 +34,7 @@ public class Enemy extends Entity {
     }
 
     public void move() {
+        animator.flush();
         if(playerVisible()) {
             randomWalkDest = gHandler.getPlayer().getPos();
             path = new ConcurrentLinkedQueue<>(gHandler.getCurrentMaze().getA_star().a_star(randomWalkDest, pos));
@@ -50,7 +51,6 @@ public class Enemy extends Entity {
         Vector2f dPos = Dir.dirToVec2f(direction);
 
         nextPos.add(dPos);
-
     }
 
     public boolean playerVisible() {
@@ -65,6 +65,20 @@ public class Enemy extends Entity {
     @Override
     public void update(double delta) {
         super.update(delta);
+
+        animator.update(delta);
+
+        if (Math.abs(nextPos.x - pos.x) > 0.05) {
+            pos.x += Math.signum(nextPos.x - pos.x) * vel * delta;
+        }
+
+        if (Math.abs(nextPos.y - pos.y) > 0.05) {
+            pos.y += Math.signum(nextPos.y - pos.y) * vel * delta;
+        }
+
+        if (nextPos.dist(pos) < 0.05 && !nextPos.equals(pos)) {
+            pos = (Vector2f) nextPos.clone();
+        }
     }
 
     @Override
