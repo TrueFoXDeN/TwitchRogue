@@ -64,11 +64,11 @@ public class Maze implements Drawable {
         }
 
 
+        a_star = new A_Star(this);
         generateMaze();
         addItems();
         addEnemies();
         updateVision(new Vector2f(0, 0));
-        a_star = new A_Star(this);
     }
 
     public boolean canMove(Vector2f pos, Dir dir) {
@@ -247,12 +247,16 @@ public class Maze implements Drawable {
             x = rand.nextInt(width - 2) + 1;
             y = rand.nextInt(height - 2) + 1;
 
-            innerLoop:
             while (true) {
+                boolean posValid = true;
                 for (Item item : items) {
-                    if (!item.getPos().equals(new Vector2f(x, y)))
-                        break innerLoop;
+                    if (item.getPos().equals(new Vector2f(x, y))) {
+                        posValid = false;
+                        break;
+                    }
                 }
+
+                if(posValid) break;
 
                 x = rand.nextInt(width - 2) + 1;
                 y = rand.nextInt(height - 2) + 1;
@@ -273,12 +277,16 @@ public class Maze implements Drawable {
 
 
         for (int i = 0; i < MAX_ENEMIES; ++i) {
-            innerLoop:
             while (true) {
+                boolean posValid = true;
                 for (Enemy enemy : enemies) {
-                    if (!enemy.getPos().equals(new Vector2f(x, y)))
-                        break innerLoop;
+                    if (enemy.getPos().equals(new Vector2f(x, y))) {
+                        posValid = false;
+                        break;
+                    }
                 }
+
+                if(posValid) break;
 
                 x = rand.nextInt(width - 2) + 1;
                 y = rand.nextInt(height - 2) + 1;
@@ -286,7 +294,6 @@ public class Maze implements Drawable {
 
             enemies.add(new Enemy(new Vector2f(x, y)));
         }
-
         entities.addAll(enemies);
     }
 
@@ -370,8 +377,8 @@ public class Maze implements Drawable {
         boolean visited = false;
         Cell neighbors[] = new Cell[4];
 
-        boolean discovered = false;
-        boolean halfVisible = false;
+        boolean discovered = true;
+        boolean halfVisible = true;
 
         public Cell(int x, int y) {
             this.x = x;
