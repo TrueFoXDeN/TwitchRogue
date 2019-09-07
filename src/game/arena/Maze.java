@@ -18,7 +18,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Maze implements Drawable {
-    private int width, height;
+    public int width, height;
     private final int MAX_ENEMIES;
     private final int MAX_ITEMS = 5;
 
@@ -65,8 +65,8 @@ public class Maze implements Drawable {
         updateVision(new Vector2f(0, 0));
     }
 
-    public boolean canMove(Vector2f playerPos, Dir dir) {
-        return true;// !cells[playerPos.to1DIndex(width)].borders[dir.id];
+    public boolean canMove(Vector2f pos, Dir dir) {
+        return true;// !cells[pos.to1DIndex(width)].borders[dir.id];
     }
 
     public List<Entity> getEntities() {
