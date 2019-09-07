@@ -1,14 +1,15 @@
 package game;
 
 import application.GameLoop;
+import drawing.Animator;
 import game.engine.Entity;
 import geometry.Vector2f;
+import io.ImageLoader;
 
 import java.awt.*;
-import java.util.LinkedList;
+import java.awt.image.BufferedImage;
+import java.util.*;
 import java.util.List;
-import java.util.Queue;
-import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static application.GameLoop.gHandler;
@@ -19,9 +20,17 @@ public class Enemy extends Entity {
     public Vector2f randomWalkDest;
 
     public Queue<Dir> path;
-
+    private Animator animator;
     public Enemy(Vector2f pos) {
         this.pos = pos;
+
+        List<BufferedImage> slimeSprites = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            slimeSprites.add(ImageLoader.sprites.get("slime_" + i));
+        }
+
+        animator = new Animator(0, 4, slimeSprites, state -> ++state % 4);
+
     }
 
     public void move() {
