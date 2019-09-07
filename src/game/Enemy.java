@@ -2,6 +2,7 @@ package game;
 
 import application.GameLoop;
 import drawing.Animator;
+import game.arena.Maze;
 import game.engine.Entity;
 import geometry.Vector2f;
 import io.ImageLoader;
@@ -24,13 +25,17 @@ public class Enemy extends Entity {
     public Enemy(Vector2f pos) {
         this.pos = pos;
 
+        Random r = new Random();
+        switch (r.nextInt(1)) {
+            case 0: type = EnemyTyp.SLIME;
+        }
+
         List<BufferedImage> slimeSprites = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             slimeSprites.add(ImageLoader.sprites.get("slime_" + i));
         }
 
         animator = new Animator(0, 4, slimeSprites, state -> ++state % 4);
-
     }
 
     public void move() {
@@ -83,11 +88,12 @@ public class Enemy extends Entity {
 
     @Override
     public void draw(Graphics g) {
-
+        g.drawImage(animator.getSprite(), (int) ((pos.x + 0.2) * Maze.CELL_SIZE),
+                (int) ((pos.y) * Maze.CELL_SIZE), (int) (Maze.CELL_SIZE / 1.5), (int) ((Maze.CELL_SIZE / 1.5) * 1.5), null);
     }
 
     public enum EnemyTyp {
-
+        SLIME
     }
 
 }

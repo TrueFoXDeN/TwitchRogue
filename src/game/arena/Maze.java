@@ -3,6 +3,7 @@ package game.arena;
 import application.Main;
 import drawing.Drawable;
 import game.Dir;
+import game.Enemy;
 import game.algorithms.A_Star;
 import game.engine.Entity;
 import game.items.Item;
@@ -65,6 +66,7 @@ public class Maze implements Drawable {
 
         generateMaze();
         addItems();
+        addEnemies();
         updateVision(new Vector2f(0, 0));
         a_star = new A_Star(this);
     }
@@ -260,6 +262,32 @@ public class Maze implements Drawable {
         }
 
         entities.addAll(items);
+    }
+
+    private void addEnemies() {
+        List<Enemy> enemies = new ArrayList<>(MAX_ENEMIES);
+        Random rand = new Random();
+
+        double x = rand.nextInt(width - 2) + 1;
+        double y = rand.nextInt(height - 2) + 1;
+
+
+        for (int i = 0; i < MAX_ENEMIES; ++i) {
+            innerLoop:
+            while (true) {
+                for (Enemy enemy : enemies) {
+                    if (!enemy.getPos().equals(new Vector2f(x, y)))
+                        break innerLoop;
+                }
+
+                x = rand.nextInt(width - 2) + 1;
+                y = rand.nextInt(height - 2) + 1;
+            }
+
+            enemies.add(new Enemy(new Vector2f(x, y)));
+        }
+
+        entities.addAll(enemies);
     }
 
     @Override
