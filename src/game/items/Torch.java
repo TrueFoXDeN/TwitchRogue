@@ -1,5 +1,6 @@
 package game.items;
 
+import application.GameLoop;
 import application.Main;
 import game.Player;
 import game.arena.Maze;
@@ -18,7 +19,7 @@ public class Torch extends Item {
 
     @Override
     public void use() {
-        // TODO: implement torch behavior
+        gHandler.getPlayer().useTorch = true;
     }
 
     @Override
