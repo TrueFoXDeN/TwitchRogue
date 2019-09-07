@@ -1,6 +1,7 @@
 package game.items;
 
 import application.GameLoop;
+import application.Main;
 import game.Player;
 import game.arena.Maze;
 import geometry.Vector2f;
@@ -30,7 +31,16 @@ public class Potion extends Item {
     }
 
     @Override
-    public void update(double delta) {
+    public void interact(Player player) {
+        gHandler.getPlayer().getPotions().add(this);
+        gHandler.getEntities().remove(this);
+        gHandler.getCurrentMaze().getEntities().remove(this);
 
+        Main.display.getDrawables().remove(this);
+    }
+
+    @Override
+    public void update(double delta) {
+        super.update(delta);
     }
 }

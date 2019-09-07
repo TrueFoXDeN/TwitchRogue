@@ -1,5 +1,7 @@
 package game;
 
+import application.GameLoop;
+import application.Main;
 import drawing.Animator;
 import game.arena.Maze;
 import game.engine.Entity;
@@ -93,7 +95,7 @@ public class Player extends Entity {
 
         if (nextPos.dist(pos) < 0.05 && !nextPos.equals(pos)) {
             pos = (Vector2f) nextPos.clone();
-            GamestateHandler.currentMaze.updateVision(pos);
+            GameLoop.gHandler.getCurrentMaze().updateVision(pos);
         }
     }
 
@@ -114,6 +116,11 @@ public class Player extends Entity {
 
     public Vector2f getPos() {
         return pos;
+    }
+
+    @Override
+    public void interact(Player player) {
+
     }
 
     public List<Potion> getPotions() {

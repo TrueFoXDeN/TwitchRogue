@@ -69,6 +69,10 @@ public class Maze implements Drawable {
         return true;// !cells[playerPos.to1DIndex(width)].borders[dir.id];
     }
 
+    public List<Entity> getEntities() {
+        return entities;
+    }
+
     public void updateVision(Vector2f playerPos) {
         int x = (int) playerPos.x;
         int y = (int) playerPos.y;

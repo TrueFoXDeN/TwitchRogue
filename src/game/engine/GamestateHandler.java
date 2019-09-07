@@ -16,7 +16,7 @@ public class GamestateHandler {
     // TODO: change back to start in menu state
     public static GameState gameState = GameState.EXPLORE;
 
-    public static Maze currentMaze = new Maze(15, 10, 0);
+    private Maze currentMaze;
 
     // entities that live in the current state
     private List<Entity> entities = new CopyOnWriteArrayList<>();
@@ -28,6 +28,9 @@ public class GamestateHandler {
     public static TwitchConnection twitchConnection;
 
     public GamestateHandler() {
+        currentMaze = new Maze(15, 10, 0);
+        entities.addAll(currentMaze.getEntities());
+
         Main.display.getDrawables().add(player);
         Main.display.getDrawables().add(voteHandler);
     }
@@ -113,5 +116,13 @@ public class GamestateHandler {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    public Maze getCurrentMaze() {
+        return currentMaze;
+    }
+
+    public List<Entity> getEntities() {
+        return entities;
     }
 }

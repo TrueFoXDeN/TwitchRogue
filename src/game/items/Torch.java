@@ -1,8 +1,12 @@
 package game.items;
 
+import application.Main;
+import game.Player;
 import game.arena.Maze;
 import geometry.Vector2f;
 import io.ImageLoader;
+
+import static application.GameLoop.gHandler;
 
 import java.awt.*;
 
@@ -14,7 +18,7 @@ public class Torch extends Item {
 
     @Override
     public void use() {
-
+        // TODO: implement torch behavior
     }
 
     @Override
@@ -24,7 +28,16 @@ public class Torch extends Item {
     }
 
     @Override
-    public void update(double delta) {
+    public void interact(Player player) {
+        gHandler.getEntities().remove(this);
+        gHandler.getCurrentMaze().getEntities().remove(this);
 
+        Main.display.getDrawables().remove(this);
+        use();
+    }
+
+    @Override
+    public void update(double delta) {
+        super.update(delta);
     }
 }

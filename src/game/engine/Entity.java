@@ -1,7 +1,10 @@
 package game.engine;
 
 import drawing.Drawable;
+import game.Player;
 import geometry.Vector2f;
+
+import static application.GameLoop.gHandler;
 
 public abstract class Entity implements Drawable {
 
@@ -11,5 +14,11 @@ public abstract class Entity implements Drawable {
         return pos;
     }
 
-    public abstract void update(double delta);
+    public abstract void interact(Player player);
+
+    public void update(double delta) {
+        if (pos.equals(gHandler.getPlayer().getPos())) {
+            interact(gHandler.getPlayer());
+        }
+    }
 }
