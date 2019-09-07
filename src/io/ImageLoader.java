@@ -41,12 +41,12 @@ public class ImageLoader {
             sprites.put("player_shadow_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "player", "spr_player_shadow.png"))).getSubimage(i * 14,0,14,21));
         }
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             sprites.put("arrow_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "ui", "arrow_"+i+".png"))));
             sprites.put("arrow_active_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "ui", "arrow_active_"+i+".png"))));
         }
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             sprites.put("action_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "ui", "action_"+i+".png"))));
             sprites.put("action_active_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "ui", "action_active_"+i+".png"))));
         }

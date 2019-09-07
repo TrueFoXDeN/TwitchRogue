@@ -42,6 +42,9 @@ public class KeyHandler implements KeyListener {
         }else if(e.getKeyCode() == KeyEvent.VK_A){
             VoteHandler.dirVoting[3] ++;
             GamestateHandler.voteHandler.update();
+        }else if(e.getKeyCode() == KeyEvent.VK_E){
+            VoteHandler.dirVoting[4] ++;
+            GamestateHandler.voteHandler.update();
         }
 
         if(e.getKeyCode() == KeyEvent.VK_SPACE){
