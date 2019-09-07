@@ -25,10 +25,6 @@ public class Player extends Entity {
 
     private List<Potion> potions = new CopyOnWriteArrayList<>();
 
-    // position on the map
-    private Vector2f nextPos = new Vector2f(0, 0);
-    private Dir direction = Dir.SOUTH;
-
     public boolean useTorch = false;
 
     private final double vel = 0.05;
@@ -106,13 +102,10 @@ public class Player extends Entity {
         if (pos.equals(nextPos)) {
             spriteAnimator.flush();
             shadowAnimator.flush();
-            nextPos.add(new Vector2f(dx, dy));
+            Vector2f dPos = new Vector2f(dx, dy);
+            nextPos.add(dPos);
 
-            if (dx > 0) direction = Dir.EAST;
-            else if (dx < 0) direction = Dir.WEST;
-
-            if (dy > 0) direction = Dir.SOUTH;
-            else if (dy < 0) direction = Dir.NORTH;
+            direction = Dir.vec2fToDir(dPos);
         }
     }
 

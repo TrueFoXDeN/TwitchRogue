@@ -19,4 +19,14 @@ public enum Dir {
         throw new IllegalArgumentException("Cant get direction from " + v.toString());
     }
 
+    public static Vector2f dirToVec2f(Dir dir) {
+        switch (dir) {
+            case NORTH: return new Vector2f(0, -1);
+            case SOUTH: return new Vector2f(0, 1);
+            case EAST: return new Vector2f(1, 0);
+            case WEST: return new Vector2f(-1, 0);
+            default: throw new IllegalStateException("");
+        }
+    }
+
 }

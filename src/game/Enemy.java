@@ -37,7 +37,11 @@ public class Enemy extends Entity {
             path = new ConcurrentLinkedQueue<>(gHandler.getCurrentMaze().getA_star().a_star(randomWalkDest, pos));
         }
 
-        Dir nextStep = path.poll();
+        direction = path.poll();
+        Vector2f dPos = Dir.dirToVec2f(direction);
+
+        nextPos.add(dPos);
+
     }
 
     public boolean playerVisible() {
