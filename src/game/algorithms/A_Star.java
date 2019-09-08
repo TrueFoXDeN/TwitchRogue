@@ -85,10 +85,7 @@ public class A_Star {
         Node node = end;
         List<Dir> dirs = new LinkedList<>();
         while(node.parent != null) {
-            double dx = node.parent.pos.x - node.pos.x;
-            double dy = node.parent.pos.y - node.pos.y;
-
-            dirs.add(Dir.vec2fToDir(new Vector2f(dx, dy)));
+            dirs.add(Dir.vec2fToDir(node.parent.pos.sub_(node.pos)));
             node = node.parent;
         }
 

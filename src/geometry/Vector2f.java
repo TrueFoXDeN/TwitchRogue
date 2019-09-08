@@ -20,6 +20,10 @@ public class Vector2f {
         return new Vector2f(x + o.x, y + o.y);
     }
 
+    public Vector2f sub_(Vector2f o) {
+        return new Vector2f(x - o.x, y - o.y);
+    }
+
     public double dist(Vector2f o) {
         double distX = x - o.x;
         double distY = y - o.y;
