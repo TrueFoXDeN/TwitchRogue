@@ -47,10 +47,13 @@ public class Enemy extends Entity {
             path = new ConcurrentLinkedQueue<>(gHandler.getCurrentMaze().getA_star().a_star(randomWalkDest, pos));
         } else if(pos.equals(randomWalkDest) || path.size() == 0) {
             Random r = new Random();
-            int w = gHandler.getCurrentMaze().width;
-            int h = gHandler.getCurrentMaze().height;
+            do {
+                int w = gHandler.getCurrentMaze().width;
+                int h = gHandler.getCurrentMaze().height;
 
-            randomWalkDest = new Vector2f(r.nextInt(w), r.nextInt(h));
+                randomWalkDest = new Vector2f(r.nextInt(w), r.nextInt(h));
+            } while(randomWalkDest.equals(pos));
+
             path = new ConcurrentLinkedQueue<>(gHandler.getCurrentMaze().getA_star().a_star(randomWalkDest, pos));
         }
 

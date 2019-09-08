@@ -41,15 +41,23 @@ public class A_Star {
         }
     }
 
-    // TODO: cycling parent pointer bug
+    private void resetNodes() {
+        for(Node n: nodes) {
+            n.f = 0;
+            n.g = 0;
+            n.parent = null;
+        }
+    }
+
     public List<Dir> a_star(Vector2f startPos, Vector2f endPos) {
+        resetNodes();
 
         Node start = nodes[startPos.to1DIndex(maze.width)], end = nodes[endPos.to1DIndex(maze.width)];
 
-        PriorityQueue<Node> openList = new PriorityQueue<>(10,
+        PriorityQueue<Node> openList = new PriorityQueue<>(100,
                 (Node n1, Node n2) -> Double.compare(n1.f, n2.f));
 
-        Set<Node> closeList = new HashSet<>(10);
+        Set<Node> closedList = new HashSet<>(10);
 
         openList.add(start);
 
@@ -65,13 +73,13 @@ public class A_Star {
             for(Node n: nodes) {
                 openList.remove(n);
 
-                if(!closeList.contains(n)) {
+                if(!closedList.contains(n)) {
                     n.parent = node;
                     n.calcF(end);
                     openList.add(n);
                 }
             }
-            closeList.add(node);
+            closedList.add(node);
         }
 
         Node node = end;
@@ -137,14 +145,12 @@ public class A_Star {
         }
 
         void addNeighbor(Node n) {
-            neighbors.put(n, new Path(this, n, pos.dist(n.pos)));
+            neighbors.put(n, new Path(this, n, 1));
         }
 
         @Override
         public boolean equals(Object obj) {
             return obj != null && obj instanceof Node
-                    && ((Node) obj).f == f
-                    && ((Node) obj).g == g
                     && ((Node) obj).pos.equals(pos);
         }
     }
