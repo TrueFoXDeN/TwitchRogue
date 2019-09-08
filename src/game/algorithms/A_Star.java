@@ -11,7 +11,7 @@ public class A_Star {
     private Node nodes[];
 
     public A_Star(Maze m) {
-        this.maze = maze;
+        this.maze = m;
         generateGraph(m);
     }
     private Maze maze;
@@ -27,21 +27,28 @@ public class A_Star {
 
         for (int i = 0; i < m.width; i++) {
             for (int j = 0; j < m.height; j++) {
-                Node current = nodes[i + j * m.width];
+                Node current = nodes[new Vector2f(i, j).to1DIndex(m.width)];
 
-                if (m.canMove(current.pos, Dir.NORTH)) current.addNeighbor(nodes[i + (j - 1) * m.width]);
-                if (m.canMove(current.pos, Dir.SOUTH)) current.addNeighbor(nodes[i + (j + 1) * m.width]);
-                if (m.canMove(current.pos, Dir.EAST)) current.addNeighbor(nodes[i + 1 + j * m.width]);
-                if (m.canMove(current.pos, Dir.WEST)) current.addNeighbor(nodes[i - 1 + j * m.width]);
+                if (m.canMove(current.pos, Dir.NORTH))
+                    current.addNeighbor(nodes[current.pos.add_(new Vector2f(0, -1)).to1DIndex(m.width)]);
+                if (m.canMove(current.pos, Dir.SOUTH))
+                    current.addNeighbor(nodes[current.pos.add_(new Vector2f(0, 1)).to1DIndex(m.width)]);
+                if (m.canMove(current.pos, Dir.EAST))
+                    current.addNeighbor(nodes[current.pos.add_(new Vector2f(1, 0)).to1DIndex(m.width)]);
+                if (m.canMove(current.pos, Dir.WEST))
+                    current.addNeighbor(nodes[current.pos.add_(new Vector2f(-1, 0)).to1DIndex(m.width)]);
             }
         }
     }
 
+    // TODO: cycling parent pointer bug
     public List<Dir> a_star(Vector2f startPos, Vector2f endPos) {
 
         Node start = nodes[startPos.to1DIndex(maze.width)], end = nodes[endPos.to1DIndex(maze.width)];
 
-        PriorityQueue<Node> openList = new PriorityQueue(10, Comparator.comparingDouble((Node n) -> n.f));
+        PriorityQueue<Node> openList = new PriorityQueue<>(10,
+                (Node n1, Node n2) -> Double.compare(n1.f, n2.f));
+
         Set<Node> closeList = new HashSet<>(10);
 
         openList.add(start);
@@ -49,7 +56,7 @@ public class A_Star {
         while(!openList.isEmpty()) {
             Node node = openList.poll();
 
-            if(node == end) {
+            if(node.equals(end)) {
                 break;
             }
 
@@ -62,7 +69,6 @@ public class A_Star {
                     n.parent = node;
                     n.calcF(end);
                     openList.add(n);
-
                 }
             }
             closeList.add(node);
@@ -75,6 +81,7 @@ public class A_Star {
             double dy = node.parent.pos.y - node.pos.y;
 
             dirs.add(Dir.vec2fToDir(new Vector2f(dx, dy)));
+            node = node.parent;
         }
 
         return dirs;
@@ -88,6 +95,14 @@ public class A_Star {
             this.n1 = n1;
             this.n2 = n2;
             this.weight = weight;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj != null && obj instanceof Path
+                    && ((Path) obj).n1.equals(n1)
+                    && ((Path) obj).n2.equals(n2)
+                    && ((Path) obj).weight == weight;
         }
     }
 
@@ -123,6 +138,14 @@ public class A_Star {
 
         void addNeighbor(Node n) {
             neighbors.put(n, new Path(this, n, pos.dist(n.pos)));
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj != null && obj instanceof Node
+                    && ((Node) obj).f == f
+                    && ((Node) obj).g == g
+                    && ((Node) obj).pos.equals(pos);
         }
     }
 

@@ -7,9 +7,10 @@ public enum Dir {
 
     public int id;
 
-    private Dir(int id) {
+    Dir(int id) {
         this.id = id;
     }
+
     public static Dir vec2fToDir(Vector2f v) {
         if(v.equals(new Vector2f(0, -1))) return NORTH;
         if(v.equals(new Vector2f(0, 1))) return SOUTH;

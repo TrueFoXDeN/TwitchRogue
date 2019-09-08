@@ -27,7 +27,7 @@ public class Vector2f {
     }
 
     public int to1DIndex(int size) {
-        return (int)x + (int)y * size;
+        return (int)(Math.round(x) + Math.round(y) * size);
     }
 
     @Override

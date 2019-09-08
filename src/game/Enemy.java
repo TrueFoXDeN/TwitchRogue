@@ -20,10 +20,11 @@ public class Enemy extends Entity {
     public EnemyTyp type;
     public Vector2f randomWalkDest;
 
-    public Queue<Dir> path;
+    public Queue<Dir> path = new ConcurrentLinkedQueue<>();
     private Animator animator;
     public Enemy(Vector2f pos) {
         this.pos = pos;
+        this.nextPos = pos;
 
         Random r = new Random();
         switch (r.nextInt(1)) {
@@ -40,10 +41,11 @@ public class Enemy extends Entity {
 
     public void move() {
         animator.flush();
+
         if(playerVisible()) {
             randomWalkDest = gHandler.getPlayer().getPos();
             path = new ConcurrentLinkedQueue<>(gHandler.getCurrentMaze().getA_star().a_star(randomWalkDest, pos));
-        } else if(pos.equals(randomWalkDest)) {
+        } else if(pos.equals(randomWalkDest) || path.size() == 0) {
             Random r = new Random();
             int w = gHandler.getCurrentMaze().width;
             int h = gHandler.getCurrentMaze().height;
@@ -95,5 +97,4 @@ public class Enemy extends Entity {
     public enum EnemyTyp {
         SLIME
     }
-
 }

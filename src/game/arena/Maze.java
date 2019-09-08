@@ -65,11 +65,11 @@ public class Maze implements Drawable {
         }
 
 
-        a_star = new A_Star(this);
         generateMaze();
+        updateVision(new Vector2f(0, 0));
+        a_star = new A_Star(this);
         addItems();
         addEnemies();
-        updateVision(new Vector2f(0, 0));
     }
 
     public boolean canMove(Vector2f pos, Dir dir) {
@@ -160,22 +160,23 @@ public class Maze implements Drawable {
 
 
         //TORCH
-        if (GameLoop.gHandler != null && GameLoop.gHandler.getPlayer() !=null){
+        if (GameLoop.gHandler != null && GameLoop.gHandler.getPlayer() != null) {
             if (GameLoop.gHandler.getPlayer().useTorch) {
 
-                Vector2f aroundPos[] = new Vector2f[8];
-                aroundPos[0] = new Vector2f(0, -1);
-                aroundPos[1] = new Vector2f(1, -1);
-                aroundPos[2] = new Vector2f(1, 0);
-                aroundPos[3] = new Vector2f(1, 1);
-                aroundPos[4] = new Vector2f(0, 1);
-                aroundPos[5] = new Vector2f(-1, 1);
-                aroundPos[6] = new Vector2f(-1, 0);
-                aroundPos[7] = new Vector2f(-1, -1);
+                Vector2f aroundPos[] = {
+                        new Vector2f(0, -1),
+                        new Vector2f(1, -1),
+                        new Vector2f(1, 0),
+                        new Vector2f(1, 1),
+                        new Vector2f(0, 1),
+                        new Vector2f(-1, 1),
+                        new Vector2f(-1, 0),
+                        new Vector2f(-1, -1)
+                };
 
                 for (int i = 0; i < aroundPos.length; i++) {
                     Vector2f neighborPos = playerPos.add_(aroundPos[i]);
-                    if(neighborPos.x > 0 && neighborPos.x < width && neighborPos.y > 0 && neighborPos.y < height){
+                    if (neighborPos.x > 0 && neighborPos.x < width && neighborPos.y > 0 && neighborPos.y < height) {
                         if (!cells[neighborPos.to1DIndex(width)].discovered) {
                             cells[neighborPos.to1DIndex(width)].halfVisible = true;
                         }
@@ -286,7 +287,7 @@ public class Maze implements Drawable {
                     }
                 }
 
-                if(posValid) break;
+                if (posValid) break;
 
                 x = rand.nextInt(width - 2) + 1;
                 y = rand.nextInt(height - 2) + 1;
@@ -316,7 +317,7 @@ public class Maze implements Drawable {
                     }
                 }
 
-                if(posValid) break;
+                if (posValid) break;
 
                 x = rand.nextInt(width - 2) + 1;
                 y = rand.nextInt(height - 2) + 1;
@@ -407,8 +408,8 @@ public class Maze implements Drawable {
         boolean visited = false;
         Cell neighbors[] = new Cell[4];
 
-        boolean discovered = false;
-        boolean halfVisible = false;
+        boolean discovered = true;
+        boolean halfVisible = true;
 
         public Cell(int x, int y) {
             this.x = x;

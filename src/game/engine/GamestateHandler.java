@@ -3,6 +3,7 @@ package game.engine;
 import application.Main;
 import drawing.VoteHandler;
 import game.Dir;
+import game.Enemy;
 import game.Player;
 import game.arena.Maze;
 import io.networking.TwitchConnection;
@@ -104,6 +105,10 @@ public class GamestateHandler {
 
         if (currentMaze.canMove(player.getPos(), dir))
             player.move(dx, dy);
+
+        for(Entity e: entities) {
+            if(e instanceof Enemy) ((Enemy) e).move();
+        }
     }
 
     public Player getPlayer() {
