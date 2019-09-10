@@ -58,6 +58,8 @@ public class ImageLoader {
             sprites.put("slime_" + i, ImageIO.read(Files.newInputStream(Paths.get("res", "enemies", "spr_slime.png"))).getSubimage(i * 16,0,16,16));
         }
 
+        sprites.put("background_battle", ImageIO.read(Files.newInputStream(Paths.get("res", "world", "background_battle.png"))));
+
     }
 
     public static void load() {

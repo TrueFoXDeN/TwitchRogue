@@ -72,7 +72,7 @@ public class VoteHandler implements Drawable, Runnable {
                 options[1] = "RIGHT: ";
                 options[2] = "DOWN: ";
                 options[3] = "LEFT: ";
-                options[4] = "Potion: ";
+                options[4] = "POTION: ";
 
                 for (int i = 0; i < pictures.length; i++) {
                     pictures[i] = "arrow_" + i;
@@ -86,6 +86,7 @@ public class VoteHandler implements Drawable, Runnable {
                 options[1] = "DODGE: ";
                 options[2] = "BLOCK: ";
                 options[3] = "FLEE: ";
+                options[4] = "POTION: ";
 
                 for (int i = 0; i < pictures.length; i++) {
                     pictures[i] = "action_" + i;
