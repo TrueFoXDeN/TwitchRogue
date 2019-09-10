@@ -22,13 +22,15 @@ public class Enemy extends Entity {
 
     public Queue<Dir> path = new ConcurrentLinkedQueue<>();
     private Animator animator;
+
     public Enemy(Vector2f pos) {
         this.pos = pos;
         this.nextPos = (Vector2f) pos.clone();
 
         Random r = new Random();
         switch (r.nextInt(1)) {
-            case 0: type = EnemyTyp.SLIME;
+            case 0:
+                type = EnemyTyp.SLIME;
         }
 
         List<BufferedImage> slimeSprites = new ArrayList<>();
@@ -40,9 +42,10 @@ public class Enemy extends Entity {
     }
 
     public void move() {
-        if(pos.equals(nextPos)) {
+        if (pos.equals(nextPos)) {
             animator.flush();
 
+            System.out.println(playerVisible());
             if (playerVisible()) {
                 randomWalkDest = gHandler.getPlayer().getPos();
                 path = new ConcurrentLinkedQueue<>(gHandler.getCurrentMaze().getA_star().a_star(randomWalkDest, pos));
@@ -66,6 +69,50 @@ public class Enemy extends Entity {
     }
 
     public boolean playerVisible() {
+        boolean canSeePlayer = true;
+        if (pos.x == gHandler.getPlayer().getPos().x) {
+            if (pos.y < gHandler.getPlayer().getPos().y) {
+                for (double y = pos.y; y < gHandler.getPlayer().getPos().y; y++) {
+                    Vector2f currentPos = new Vector2f(pos.x, y);
+                    if (!(gHandler.getCurrentMaze().canMove(currentPos, Dir.NORTH)
+                            && gHandler.getCurrentMaze().canMove(currentPos, Dir.SOUTH))) {
+                        canSeePlayer = false;
+                        break;
+                    }
+                }
+            } else {
+                for (double y = pos.y; y > gHandler.getPlayer().getPos().y; y--) {
+                    Vector2f currentPos = new Vector2f(pos.x, y);
+                    if (!(gHandler.getCurrentMaze().canMove(currentPos, Dir.NORTH)
+                            && gHandler.getCurrentMaze().canMove(currentPos, Dir.SOUTH))) {
+                        canSeePlayer = false;
+                        break;
+                    }
+                }
+            }
+            return canSeePlayer;
+        } else if (pos.y == gHandler.getPlayer().getPos().y) {
+            if (pos.x < gHandler.getPlayer().getPos().x) {
+                for (double x = pos.x; x < gHandler.getPlayer().getPos().x; x++) {
+                    Vector2f currentPos = new Vector2f(x, pos.y);
+                    if (!(gHandler.getCurrentMaze().canMove(currentPos, Dir.WEST)
+                            && gHandler.getCurrentMaze().canMove(currentPos, Dir.EAST))) {
+                        canSeePlayer = false;
+                        break;
+                    }
+                }
+            } else {
+                for (double x = pos.x; x > gHandler.getPlayer().getPos().x; x--) {
+                    Vector2f currentPos = new Vector2f(x, pos.y);
+                    if (!(gHandler.getCurrentMaze().canMove(currentPos, Dir.WEST)
+                            && gHandler.getCurrentMaze().canMove(currentPos, Dir.EAST))) {
+                        canSeePlayer = false;
+                        break;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 
