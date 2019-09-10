@@ -36,7 +36,7 @@ public class Enemy extends Entity {
             slimeSprites.add(ImageLoader.sprites.get("slime_" + i));
         }
 
-        animator = new Animator(0, 4, slimeSprites, state -> ++state % 4);
+        animator = new Animator(0, 8, slimeSprites, state -> ++state % 4);
     }
 
     public void move() {
@@ -96,7 +96,7 @@ public class Enemy extends Entity {
     @Override
     public void draw(Graphics g) {
         g.drawImage(animator.getSprite(), (int) ((pos.x + 0.2) * Maze.CELL_SIZE),
-                (int) ((pos.y) * Maze.CELL_SIZE), (int) (Maze.CELL_SIZE / 1.5), (int) ((Maze.CELL_SIZE / 1.5) * 1.5), null);
+                (int) ((pos.y) * Maze.CELL_SIZE), (int) (Maze.CELL_SIZE / 1.5), (int) ((Maze.CELL_SIZE / 1.5) * 1.2), null);
     }
 
     public enum EnemyTyp {

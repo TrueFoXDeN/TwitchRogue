@@ -25,7 +25,7 @@ public class Player extends Entity {
 
     private List<Potion> potions = new CopyOnWriteArrayList<>();
 
-    public boolean useTorch = true;
+    public boolean useTorch = false;
 
     private final Animator spriteAnimator, shadowAnimator;
 
