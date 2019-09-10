@@ -13,6 +13,7 @@ import game.items.Torch;
 import geometry.Vector2f;
 import io.ImageLoader;
 
+import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
@@ -408,8 +409,8 @@ public class Maze implements Drawable {
         boolean visited = false;
         Cell neighbors[] = new Cell[4];
 
-        boolean discovered = false;
-        boolean halfVisible = false;
+        boolean discovered = Main.DEBUGGING_VISION;
+        boolean halfVisible = Main.DEBUGGING_VISION;
 
         public Cell(int x, int y) {
             this.x = x;

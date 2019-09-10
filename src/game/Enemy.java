@@ -45,7 +45,6 @@ public class Enemy extends Entity {
         if (pos.equals(nextPos)) {
             animator.flush();
 
-            System.out.println(playerVisible());
             if (playerVisible()) {
                 randomWalkDest = gHandler.getPlayer().getPos();
                 path = new ConcurrentLinkedQueue<>(gHandler.getCurrentMaze().getA_star().a_star(randomWalkDest, pos));
@@ -69,10 +68,12 @@ public class Enemy extends Entity {
     }
 
     public boolean playerVisible() {
+        if(pos.equals(gHandler.getPlayer().getPos())) return true;
+
         boolean canSeePlayer = true;
         if (pos.x == gHandler.getPlayer().getPos().x) {
             if (pos.y < gHandler.getPlayer().getPos().y) {
-                for (double y = pos.y; y < gHandler.getPlayer().getPos().y; y++) {
+                for (double y = pos.y + 1; y < gHandler.getPlayer().getPos().y; y++) {
                     Vector2f currentPos = new Vector2f(pos.x, y);
                     if (!(gHandler.getCurrentMaze().canMove(currentPos, Dir.NORTH)
                             && gHandler.getCurrentMaze().canMove(currentPos, Dir.SOUTH))) {
@@ -81,7 +82,7 @@ public class Enemy extends Entity {
                     }
                 }
             } else {
-                for (double y = pos.y; y > gHandler.getPlayer().getPos().y; y--) {
+                for (double y = pos.y - 1; y > gHandler.getPlayer().getPos().y; y--) {
                     Vector2f currentPos = new Vector2f(pos.x, y);
                     if (!(gHandler.getCurrentMaze().canMove(currentPos, Dir.NORTH)
                             && gHandler.getCurrentMaze().canMove(currentPos, Dir.SOUTH))) {
@@ -93,7 +94,7 @@ public class Enemy extends Entity {
             return canSeePlayer;
         } else if (pos.y == gHandler.getPlayer().getPos().y) {
             if (pos.x < gHandler.getPlayer().getPos().x) {
-                for (double x = pos.x; x < gHandler.getPlayer().getPos().x; x++) {
+                for (double x = pos.x + 1; x < gHandler.getPlayer().getPos().x; x++) {
                     Vector2f currentPos = new Vector2f(x, pos.y);
                     if (!(gHandler.getCurrentMaze().canMove(currentPos, Dir.WEST)
                             && gHandler.getCurrentMaze().canMove(currentPos, Dir.EAST))) {
@@ -102,7 +103,7 @@ public class Enemy extends Entity {
                     }
                 }
             } else {
-                for (double x = pos.x; x > gHandler.getPlayer().getPos().x; x--) {
+                for (double x = pos.x - 1; x > gHandler.getPlayer().getPos().x; x--) {
                     Vector2f currentPos = new Vector2f(x, pos.y);
                     if (!(gHandler.getCurrentMaze().canMove(currentPos, Dir.WEST)
                             && gHandler.getCurrentMaze().canMove(currentPos, Dir.EAST))) {
