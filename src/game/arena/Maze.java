@@ -176,7 +176,7 @@ public class Maze implements Drawable {
 
                 for (int i = 0; i < aroundPos.length; i++) {
                     Vector2f neighborPos = playerPos.add_(aroundPos[i]);
-                    if (neighborPos.x > 0 && neighborPos.x < width && neighborPos.y > 0 && neighborPos.y < height) {
+                    if (neighborPos.x >= 0 && neighborPos.x < width && neighborPos.y >= 0 && neighborPos.y < height) {
                         if (!cells[neighborPos.to1DIndex(width)].discovered) {
                             cells[neighborPos.to1DIndex(width)].halfVisible = true;
                         }

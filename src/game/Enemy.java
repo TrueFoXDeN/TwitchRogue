@@ -24,7 +24,7 @@ public class Enemy extends Entity {
     private Animator animator;
     public Enemy(Vector2f pos) {
         this.pos = pos;
-        this.nextPos = pos;
+        this.nextPos = (Vector2f) pos.clone();
 
         Random r = new Random();
         switch (r.nextInt(1)) {
@@ -40,27 +40,29 @@ public class Enemy extends Entity {
     }
 
     public void move() {
-        animator.flush();
+        if(pos.equals(nextPos)) {
+            animator.flush();
 
-        if(playerVisible()) {
-            randomWalkDest = gHandler.getPlayer().getPos();
-            path = new ConcurrentLinkedQueue<>(gHandler.getCurrentMaze().getA_star().a_star(randomWalkDest, pos));
-        } else if(pos.equals(randomWalkDest) || path.size() == 0) {
-            Random r = new Random();
-            do {
-                int w = gHandler.getCurrentMaze().width;
-                int h = gHandler.getCurrentMaze().height;
+            if (playerVisible()) {
+                randomWalkDest = gHandler.getPlayer().getPos();
+                path = new ConcurrentLinkedQueue<>(gHandler.getCurrentMaze().getA_star().a_star(randomWalkDest, pos));
+            } else if (pos.equals(randomWalkDest) || path.size() == 0) {
+                Random r = new Random();
+                do {
+                    int w = gHandler.getCurrentMaze().width;
+                    int h = gHandler.getCurrentMaze().height;
 
-                randomWalkDest = new Vector2f(r.nextInt(w), r.nextInt(h));
-            } while(randomWalkDest.equals(pos));
+                    randomWalkDest = new Vector2f(r.nextInt(w), r.nextInt(h));
+                } while (randomWalkDest.equals(pos));
 
-            path = new ConcurrentLinkedQueue<>(gHandler.getCurrentMaze().getA_star().a_star(randomWalkDest, pos));
+                path = new ConcurrentLinkedQueue<>(gHandler.getCurrentMaze().getA_star().a_star(randomWalkDest, pos));
+            }
+
+            direction = path.poll();
+            Vector2f dPos = Dir.dirToVec2f(direction);
+
+            nextPos.add(dPos);
         }
-
-        direction = path.poll();
-        Vector2f dPos = Dir.dirToVec2f(direction);
-
-        nextPos.add(dPos);
     }
 
     public boolean playerVisible() {
