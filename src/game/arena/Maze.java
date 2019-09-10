@@ -408,8 +408,8 @@ public class Maze implements Drawable {
         boolean visited = false;
         Cell neighbors[] = new Cell[4];
 
-        boolean discovered = true;
-        boolean halfVisible = true;
+        boolean discovered = false;
+        boolean halfVisible = false;
 
         public Cell(int x, int y) {
             this.x = x;
