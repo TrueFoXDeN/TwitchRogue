@@ -107,10 +107,6 @@ public class Player extends Entity {
         }
     }
 
-    public Vector2f getPos() {
-        return pos;
-    }
-
     @Override
     public void interact(Player player) {
 

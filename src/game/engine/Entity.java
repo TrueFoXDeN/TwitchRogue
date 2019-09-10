@@ -18,6 +18,9 @@ public abstract class Entity implements Drawable {
     public Vector2f getPos() {
         return pos;
     }
+    public Vector2f getNextPos() {
+        return nextPos;
+    }
 
     public abstract void interact(Player player);
 

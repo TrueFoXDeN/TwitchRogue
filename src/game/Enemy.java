@@ -4,6 +4,7 @@ import application.GameLoop;
 import drawing.Animator;
 import game.arena.Maze;
 import game.engine.Entity;
+import game.engine.GameState;
 import geometry.Vector2f;
 import io.ImageLoader;
 
@@ -45,7 +46,9 @@ public class Enemy extends Entity {
         if (pos.equals(nextPos)) {
             animator.flush();
 
-            if (playerVisible()) {
+            if (gHandler.getPlayer().getNextPos().equals(pos)) {
+                path.clear();
+            } else if (playerVisible()) {
                 randomWalkDest = gHandler.getPlayer().getPos();
                 path = new ConcurrentLinkedQueue<>(gHandler.getCurrentMaze().getA_star().a_star(randomWalkDest, pos));
             } else if (pos.equals(randomWalkDest) || path.size() == 0) {
@@ -61,14 +64,19 @@ public class Enemy extends Entity {
             }
 
             direction = path.poll();
-            Vector2f dPos = Dir.dirToVec2f(direction);
+            Vector2f dPos;
+            if (direction == null) {
+                dPos = new Vector2f(0, 0);
+            } else {
+                dPos = Dir.dirToVec2f(direction);
+            }
 
             nextPos.add(dPos);
         }
     }
 
     public boolean playerVisible() {
-        if(pos.equals(gHandler.getPlayer().getPos())) return true;
+        if (pos.equals(gHandler.getPlayer().getPos())) return true;
 
         boolean canSeePlayer = true;
         if (pos.x == gHandler.getPlayer().getPos().x) {
@@ -119,7 +127,7 @@ public class Enemy extends Entity {
 
     @Override
     public void interact(Player player) {
-
+        gHandler.setGameState(GameState.BATTLE);
     }
 
     @Override

@@ -16,7 +16,7 @@ public class Display extends Canvas implements Runnable {
     private JPanel contentPane = new JPanel();
     private Thread drawThread = new Thread(this);
 
-    private int w0, h0;
+    public int w0, h0;
 
     private List<Drawable> drawables = new CopyOnWriteArrayList<>();
     private Drawable background;

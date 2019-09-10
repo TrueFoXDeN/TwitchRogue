@@ -78,9 +78,7 @@ public class GamestateHandler {
     }
 
     private void updateExplore() {
-        if (Main.display.getBackground_() != currentMaze) {
-            Main.display.setBackground(currentMaze);
-        }
+
     }
 
     private void updateBattle() {
@@ -115,8 +113,17 @@ public class GamestateHandler {
         return player;
     }
 
-    public void addGameState(GameState g) {
+    public void setGameState(GameState g) {
         gameState = g;
+
+        switch (g) {
+            case EXPLORE:
+                Main.display.setBackground(currentMaze);
+                break;
+            case BATTLE:
+
+                break;
+        }
     }
 
     public GameState getGameState() {
