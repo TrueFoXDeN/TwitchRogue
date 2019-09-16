@@ -396,11 +396,44 @@ public class Maze implements Drawable {
             }
         }
 
-        entities.forEach(e -> {
-            if (cells[e.getPos().to1DIndex(width)].discovered) {
-                e.draw(g);
+        // draw all non enemy entities
+        entities.forEach(entity -> {
+            if (!(entity instanceof Enemy)) entity.draw(g);
+        });
+
+
+        // draw the enemies
+        // if more than one enemy has the same position
+        // draw only the strongest enemy and the number of enemies o this cell
+        Map<Vector2f, List<Enemy>> entityWithSamePos = new HashMap<>();
+        entities.forEach(entity -> {
+            if (!(entity instanceof Enemy)) return;
+
+            boolean foundKey = false;
+            for (Vector2f key : entityWithSamePos.keySet()) {
+                if (entity.getPos().dist(key) <= 0.2) {
+                    entityWithSamePos.get(key).add((Enemy) entity);
+                    foundKey = true;
+                    break;
+                }
+            }
+
+            if (!foundKey) {
+                entityWithSamePos.put(entity.getPos(), Arrays.asList((Enemy) entity));
             }
         });
+
+        g.setFont(new Font("Courier New", Font.BOLD, 24));
+        FontMetrics fm = g.getFontMetrics();
+        for (var p : entityWithSamePos.entrySet())
+            p.getValue().stream().max(Comparator.comparingInt(e -> e.getType().strenghtID)
+            ).ifPresent(enemy -> {
+                enemy.draw(g);
+                g.drawString(String.valueOf(p.getValue().size()),
+                        (int)p.getKey().x - 5,
+                        (int)p.getKey().y - fm.getHeight());
+            });
+
     }
 
     private class Cell {

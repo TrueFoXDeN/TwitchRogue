@@ -1,6 +1,8 @@
 package game.engine;
 
+import application.GameLoop;
 import application.Main;
+import drawing.BattleBackground;
 import drawing.VoteHandler;
 import game.Dir;
 import game.Enemy;
@@ -78,7 +80,9 @@ public class GamestateHandler {
     }
 
     private void updateExplore() {
-
+        // TODO: remove this debugging statement
+        if(Main.display.getBackground_() != currentMaze)
+            Main.display.setBackground(currentMaze);
     }
 
     private void updateBattle() {
@@ -115,15 +119,22 @@ public class GamestateHandler {
 
     public void setGameState(GameState g) {
         gameState = g;
+        clearCurrentState();
 
-        switch (g) {
+        switch (gameState) {
             case EXPLORE:
                 Main.display.setBackground(currentMaze);
                 break;
             case BATTLE:
-
+                Main.display.setBackground(new BattleBackground());
                 break;
         }
+    }
+
+    private void clearCurrentState() {
+        Main.display.getDrawables().clear();
+        GameLoop.gHandler.getEntities().clear();
+        Main.display.getDrawables().add(voteHandler);
     }
 
     public GameState getGameState() {

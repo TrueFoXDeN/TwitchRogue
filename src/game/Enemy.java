@@ -147,6 +147,7 @@ public class Enemy extends Entity {
         if (nextPos.dist(pos) < 0.05 && !nextPos.equals(pos)) {
             pos = (Vector2f) nextPos.clone();
         }
+
     }
 
     @Override
@@ -155,7 +156,17 @@ public class Enemy extends Entity {
                 (int) ((pos.y) * Maze.CELL_SIZE), (int) (Maze.CELL_SIZE / 1.5), (int) ((Maze.CELL_SIZE / 1.5) * 1.2), null);
     }
 
+    public EnemyTyp getType() {
+        return type;
+    }
+
     public enum EnemyTyp {
-        SLIME
+        SLIME(0);
+
+        public int strenghtID;
+
+        EnemyTyp(int strenghtID) {
+            this.strenghtID = strenghtID;
+        }
     }
 }
