@@ -10,8 +10,10 @@ import game.Player;
 import game.arena.Maze;
 import io.networking.TwitchConnection;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 public class GamestateHandler {
 
@@ -29,6 +31,9 @@ public class GamestateHandler {
 
     public static VoteHandler voteHandler = new VoteHandler();
     public static TwitchConnection twitchConnection;
+
+    private int battleEnemyStrength = 0;
+    private Enemy.EnemyTyp battleEnemyType;
 
     public GamestateHandler() {
         currentMaze = new Maze(15, 10, 5);
@@ -81,7 +86,7 @@ public class GamestateHandler {
 
     private void updateExplore() {
         // TODO: remove this debugging statement
-        if(Main.display.getBackground_() != currentMaze)
+        if (Main.display.getBackground_() != currentMaze)
             Main.display.setBackground(currentMaze);
     }
 
@@ -108,8 +113,8 @@ public class GamestateHandler {
         if (currentMaze.canMove(player.getPos(), dir))
             player.move(dx, dy);
 
-        for(Entity e: entities) {
-            if(e instanceof Enemy) ((Enemy) e).move();
+        for (Entity e : entities) {
+            if (e instanceof Enemy) ((Enemy) e).move();
         }
     }
 
@@ -127,6 +132,21 @@ public class GamestateHandler {
                 break;
             case BATTLE:
                 Main.display.setBackground(new BattleBackground());
+                battleEnemyStrength = 0;
+                List<Enemy> attackers = currentMaze.getEntities().stream()
+                        .filter(e -> !(e instanceof Enemy))
+                        .map(e -> (Enemy) e)
+                        .filter(e -> !e.getPos().equals(player.getPos()))
+                        .collect(Collectors.toList());
+
+                // get enemy strength
+                attackers.forEach(e -> battleEnemyStrength += e.getType().strenghtID);
+                // get the type of the strongest enemy for drawing
+                attackers.stream()
+                        .max(Comparator.comparingInt(e -> e.getType().strenghtID))
+                        .ifPresentOrElse(e -> battleEnemyType = e.getType(),
+                                () -> battleEnemyType = Enemy.EnemyTyp.SLIME);
+
                 break;
         }
     }
