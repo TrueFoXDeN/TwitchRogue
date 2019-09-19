@@ -17,6 +17,7 @@ import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -406,7 +407,7 @@ public class Maze implements Drawable {
         // draw the enemies
         // if more than one enemy has the same position
         // draw only the strongest enemy and the number of enemies o this cell
-        Map<Vector2f, List<Enemy>> entityWithSamePos = new HashMap<>();
+        Map<Vector2f, List<Enemy>> entityWithSamePos = new ConcurrentHashMap<>();
         entities.forEach(entity -> {
             if (!(entity instanceof Enemy)) return;
 
@@ -420,7 +421,9 @@ public class Maze implements Drawable {
             }
 
             if (!foundKey) {
-                entityWithSamePos.put(entity.getPos(), Arrays.asList((Enemy) entity));
+                List<Enemy> temp = new LinkedList<>();
+                temp.add((Enemy) entity);
+                entityWithSamePos.put(entity.getPos(), temp);
             }
         });
 
