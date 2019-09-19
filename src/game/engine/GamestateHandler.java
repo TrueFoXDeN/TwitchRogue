@@ -134,7 +134,7 @@ public class GamestateHandler {
                 Main.display.setBackground(new BattleBackground());
                 battleEnemyStrength = 0;
                 List<Enemy> attackers = currentMaze.getEntities().stream()
-                        .filter(e -> !(e instanceof Enemy))
+                        .filter(e -> e instanceof Enemy)
                         .map(e -> (Enemy) e)
                         .filter(e -> !e.getPos().equals(player.getPos()))
                         .collect(Collectors.toList());
