@@ -41,7 +41,7 @@ public class BattleBackground implements Drawable {
             dy = 0.0;
             for (int y = 0; y < back.getHeight(); y++, dy += SPACE_OFFSET) {
                 double colorScalar = (noise.eval(dx, dy, t.get()) + 1) / 2;
-                Color pixelColor = multCol(noiseColor, colorScalar);
+                Color pixelColor = pixelLate(multCol(noiseColor, colorScalar));
                 back.setRGB(x, y, pixelColor.getRGB());
             }
         }
@@ -54,5 +54,13 @@ public class BattleBackground implements Drawable {
         return new Color((int)Math.round(color.getRed() * scalar),
                 (int)Math.round(color.getGreen() * scalar),
                 (int)Math.round(color.getBlue() * scalar));
+    }
+
+    private Color pixelLate(Color color) {
+        final double pixelation = 10;
+        return new Color((int)(Math.floor(color.getRed() / pixelation) * pixelation),
+                (int)(Math.floor(color.getGreen() / pixelation) * pixelation),
+                (int)(Math.floor(color.getBlue() / pixelation) * pixelation)
+        );
     }
 }
