@@ -435,8 +435,8 @@ public class Maze implements Drawable {
                 if(cells[enemy.getNextPos().to1DIndex(width)].discovered) {
                     enemy.draw(g);
                     g.drawString(String.valueOf(p.getValue().size()),
-                            (int) p.getKey().x - 5,
-                            (int) p.getKey().y - fm.getHeight());
+                            (int) enemy.getPos().x * CELL_SIZE + fm.stringWidth(String.valueOf(p.getValue().size())),
+                            (int) enemy.getPos().y * CELL_SIZE + fm.getHeight());
                 }
             });
 

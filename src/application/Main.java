@@ -7,7 +7,7 @@ import io.ImageLoader;
 
 public class Main {
 
-    public static final boolean DEBUGGING_VISION = false;
+    public static final boolean DEBUGGING_VISION = true;
     public static final Display display = new Display(1280, 740, "Twitch Roguelike by FoX and GertrundeltHD");
 
     public static void main(String[] args) {
